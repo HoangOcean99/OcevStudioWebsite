@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ../frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+
+  api-gateway:
+    build:
+      context: ../backend/api-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    env_file:
+      - ../backend/.env
+    volumes:
+      - ../backend/api-gateway:/app
+      - /app/node_modules
+      
+  user-service:
+    build:
+      context: ../backend/user-service
+    ports:
+      - "8001:8001"
+    env_file:
+      - ../backend/.env
+    volumes:
+      - ../backend/user-service:/app
+      - /app/node_modules
+
+  product-service:
+    build:
+      context: ../backend/product-service
+    ports:
+      - "8002:8002"
+    env_file:
+      - ../backend/.env
+    volumes:
+      - ../backend/product-service:/app
+      - /app/node_modules
+
+  order-service:
+    build:
+      context: ../backend/order-service
+    ports:
+      - "8003:8003"
+    env_file:
+      - ../backend/.env
+    volumes:
+      - ../backend/order-service:/app
+      - /app/node_modules
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
