@@ -3,10 +3,24 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import Redis from 'ioredis';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 const app = express();
-app.use(cors());
+
+// Security Middleware (Helmet)
+app.use(helmet());
+
+// Restrict CORS to specific origin
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+}));
+
 app.use(express.json());
+
+// NoSQL Injection Protection
+app.use(mongoSanitize());
 
 // Redis Connection
 const redis = new Redis(process.env.REDIS_URL || 'redis://redis:6379');
