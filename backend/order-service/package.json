@@ -1,10 +1,12 @@
 {
-  "name": "backend",
+  "name": "order-service",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Order management microservice for OcevStudio",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +20,8 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "@types/node": "^20.17.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
   }
 }

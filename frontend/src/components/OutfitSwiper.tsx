@@ -35,16 +35,21 @@ const MOCK_OUTFITS: OutfitData[] = [
   }
 ];
 
+import { useAppStore } from "../store/useAppStore";
+import { useTranslation } from "@/hooks/useTranslation";
+
 export default function OutfitSwiper() {
+  const { t } = useTranslation('swipe');
   const [outfits, setOutfits] = useState<OutfitData[]>(MOCK_OUTFITS);
-  const [liked, setLiked] = useState<string[]>([]);
-  const [passed, setPassed] = useState<string[]>([]);
+  const addToCart = useAppStore((state) => state.addToCart);
+  const addPassedOutfit = useAppStore((state) => state.addPassedOutfit);
 
   const handleSwipe = (direction: "left" | "right", id: string) => {
-    if (direction === "right") {
-      setLiked((prev) => [...prev, id]);
+    const outfit = outfits.find(o => o.id === id);
+    if (direction === "right" && outfit) {
+      addToCart(outfit);
     } else {
-      setPassed((prev) => [...prev, id]);
+      addPassedOutfit(id);
     }
     
     // Remove the outfit from the stack after swipe
@@ -70,13 +75,13 @@ export default function OutfitSwiper() {
         })
       ) : (
         <div className="flex flex-col items-center justify-center h-full w-full bg-gray-50 rounded-3xl border-2 border-dashed border-gray-300">
-          <h2 className="text-2xl font-semibold text-gray-500 mb-2">You're all caught up!</h2>
-          <p className="text-gray-400 text-center px-6">Check back later for new styles or review your liked outfits.</p>
+          <h2 className="text-2xl font-semibold text-gray-500 mb-2">{t("allCaughtUp")}</h2>
+          <p className="text-gray-400 text-center px-6">{t("checkBackLater")}</p>
           <button 
             onClick={() => setOutfits(MOCK_OUTFITS)}
             className="mt-6 px-6 py-2 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
           >
-            Reset Demo
+            {t("resetDemo")}
           </button>
         </div>
       )}

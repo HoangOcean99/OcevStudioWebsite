@@ -1,10 +1,14 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "OcevStudio Backend Services",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently --kill-others \"npm run dev --prefix api-gateway\" \"npm run dev --prefix user-service\" \"npm run dev --prefix product-service\" \"npm run dev --prefix order-service\"",
+    "dev:gateway": "npm run dev --prefix api-gateway",
+    "dev:user": "npm run dev --prefix user-service",
+    "dev:product": "npm run dev --prefix product-service",
+    "dev:order": "npm run dev --prefix order-service"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +22,9 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "@types/node": "^20.17.0",
+    "concurrently": "^9.1.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
   }
 }
