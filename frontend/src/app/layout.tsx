@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "./providers";
 import AIDrawer from "@/components/AIDrawer";
 import AIFloatingButton from "@/components/AIFloatingButton";
+import ShippingInfoModal from "@/components/ShippingInfoModal";
 import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
           {children}
           <AIDrawer />
           <AIFloatingButton />
+          <ShippingInfoModal />
         </Providers>
       </body>
     </html>

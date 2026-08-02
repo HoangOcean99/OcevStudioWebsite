@@ -1,0 +1,34 @@
+[
+  {
+    "oldId": "prod-1",
+    "newId": "6a6efefaaf47fac2785da2aa"
+  },
+  {
+    "oldId": "prod-2",
+    "newId": "6a6efefaaf47fac2785da2ad"
+  },
+  {
+    "oldId": "prod-3",
+    "newId": "6a6efefaaf47fac2785da2ae"
+  },
+  {
+    "oldId": "prod-4",
+    "newId": "6a6efefaaf47fac2785da2af"
+  },
+  {
+    "oldId": "prod-5",
+    "newId": "6a6efefaaf47fac2785da2b0"
+  },
+  {
+    "oldId": "prod-6",
+    "newId": "6a6efefaaf47fac2785da2b1"
+  },
+  {
+    "oldId": "prod-7",
+    "newId": "6a6efefaaf47fac2785da2b2"
+  },
+  {
+    "oldId": "prod-8",
+    "newId": "6a6efefaaf47fac2785da2b3"
+  }
+]

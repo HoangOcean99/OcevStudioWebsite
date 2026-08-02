@@ -4,24 +4,33 @@
   "description": "OcevStudio Backend Services",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run dev --prefix api-gateway\" \"npm run dev --prefix user-service\" \"npm run dev --prefix product-service\" \"npm run dev --prefix order-service\"",
-    "dev:gateway": "npm run dev --prefix api-gateway",
-    "dev:user": "npm run dev --prefix user-service",
-    "dev:product": "npm run dev --prefix product-service",
-    "dev:order": "npm run dev --prefix order-service"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.8.1"
+    "express-async-handler": "^1.2.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.6.1",
+    "google-auth-library": "^11.0.0",
+    "helmet": "^8.3.0",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.8.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.17.0",
     "concurrently": "^9.1.2",
     "tsx": "^4.19.3",

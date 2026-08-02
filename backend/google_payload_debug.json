@@ -1,0 +1,11 @@
+{
+  "iss": "accounts.google.com",
+  "azp": "790495215816-s9d6ede12ma49jmh5i433186luf11uq4.apps.googleusercontent.com",
+  "aud": "790495215816-s9d6ede12ma49jmh5i433186luf11uq4.apps.googleusercontent.com",
+  "sub": "113192873496466458745",
+  "email": "duonghaiduong090905@gmail.com",
+  "email_verified": true,
+  "at_hash": "2PfylIbvBBW2kbeloiGrSw",
+  "iat": 1785656742,
+  "exp": 1785660342
+}

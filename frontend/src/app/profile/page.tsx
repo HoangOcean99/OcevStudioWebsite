@@ -6,24 +6,13 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Package, Truck, CheckCircle2, User, MapPin } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function ProfilePage() {
   const { t } = useTranslation("profile");
-  const { user, isLoggedIn } = useAuthStore();
-  const router = useRouter();
-  
-  const [mounted, setMounted] = useState(false);
+  const { user } = useAuthStore();
 
-  useEffect(() => {
-    setMounted(true);
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [isLoggedIn, router]);
-
-  if (!mounted || !user) return null;
+  if (!user) return null;
 
   // Mock Orders Data
   const mockOrders = [
@@ -48,8 +37,9 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
-      <Navbar />
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
+        <Navbar />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         <h1 className="text-3xl font-black uppercase tracking-tight mb-8">
@@ -61,8 +51,14 @@ export default function ProfilePage() {
           {/* Sidebar Profile Info */}
           <div className="md:col-span-1 space-y-6">
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-gray-100 dark:border-zinc-800 shadow-xl flex flex-col items-center text-center">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 dark:border-zinc-800 mb-4">
-                <Image src={user.avatar} alt={user.name} fill className="object-cover" />
+              <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 dark:border-zinc-800 mb-4 bg-gray-100 dark:bg-zinc-800">
+                <Image 
+                  src={user.avatar || "/default-avatar.svg"} 
+                  alt={user.name} 
+                  fill 
+                  sizes="96px"
+                  className="object-cover" 
+                />
               </div>
               <h2 className="text-xl font-bold">{user.name}</h2>
               <p className="text-sm text-gray-500 mb-4">{user.email}</p>
@@ -185,6 +181,7 @@ export default function ProfilePage() {
       </main>
       
       <Footer />
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }

@@ -46,7 +46,7 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set, get) => ({
   cart: [],
-  wishlist: ["prod-1", "prod-3"], // default demo wishlist items
+  wishlist: ["6a6efefaaf47fac2785da2aa", "6a6efefaaf47fac2785da2ae"], // default demo wishlist items
   passedOutfits: [],
   isCartOpen: false,
   isAiDrawerOpen: false,

@@ -9,32 +9,85 @@ import { ArrowLeft, CheckCircle2, Loader2, Package, CreditCard, Check } from "lu
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useEffect } from "react";
+import api from "@/lib/api";
 
 export default function CheckoutPage() {
   const { t } = useTranslation("checkout");
   const { cart, clearCart } = useAppStore();
+  const { user } = useAuthStore();
   const router = useRouter();
   
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isProcessing, setIsProcessing] = useState(false);
   
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: ""
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || ""
+      });
+    }
+  }, [user]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const isStep1Valid = formData.name.trim() !== "" && formData.email.trim() !== "" && formData.phone.trim() !== "" && formData.address.trim() !== "";
+  
   const totalAmount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    if (cart.length === 0) return;
     setIsProcessing(true);
-    // Simulate quantum encryption processing
-    setTimeout(() => {
-      setIsProcessing(false);
+    
+    try {
+      const orderData = {
+        items: cart.map(item => ({
+          product: item.id,
+          quantity: item.quantity,
+          size: item.size || 'Freesize',
+          price: item.price
+        })),
+        shippingAddress: formData.address,
+        paymentMethod: "Crypto / Neural Pay",
+        totalAmount: totalAmount + 15, // Including $15 drone shipping
+        guestInfo: !user ? {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone
+        } : undefined
+      };
+
+      await api.post('/orders', orderData);
+      
       setStep(3);
       clearCart();
-    }, 2500);
+    } catch (error) {
+      console.error("Order failed:", error);
+      alert("There was an error placing your order. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
-      <Navbar />
+      <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
+        <Navbar />
 
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+        <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {/* Back Link */}
         <Link href="/shop" className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-black dark:hover:text-white mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Quay lại cửa hàng
@@ -86,21 +139,26 @@ export default function CheckoutPage() {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">{t("fullName")}</label>
-                    <input type="text" defaultValue="Alex Ocev" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors" />
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Alex Ocev" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">Email</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="alex@example.com" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">{t("phone")}</label>
-                    <input type="text" defaultValue="+84 987 654 321" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors" />
+                    <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+84 987 654 321" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">{t("address")}</label>
-                    <textarea rows={3} defaultValue="Sector 7, Neo-Hanoi, Cyber-District 2077" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"></textarea>
+                    <textarea rows={3} name="address" value={formData.address} onChange={handleInputChange} placeholder="Sector 7, Neo-Hanoi, Cyber-District 2077" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"></textarea>
                   </div>
                 </div>
 
                 <button 
                   onClick={() => setStep(2)}
-                  className="mt-8 w-full py-4 bg-black text-white dark:bg-white dark:text-black rounded-xl text-sm font-bold hover:scale-[1.01] transition-transform"
+                  disabled={!isStep1Valid}
+                  className={`mt-8 w-full py-4 rounded-xl text-sm font-bold transition-transform ${isStep1Valid ? 'bg-black text-white dark:bg-white dark:text-black hover:scale-[1.01]' : 'bg-gray-200 text-gray-400 dark:bg-zinc-800 dark:text-zinc-600 cursor-not-allowed'}`}
                 >
                   {t("next")}
                 </button>
@@ -225,9 +283,9 @@ export default function CheckoutPage() {
           </div>
 
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+        </main>
+        
+        <Footer />
+      </div>
   );
 }

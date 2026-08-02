@@ -1,32 +1,12 @@
-export interface BundleItem {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  sizes: ('S' | 'M' | 'L' | 'XL')[];
-}
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Product from '../src/models/Product';
+import path from 'path';
 
-export interface Product {
-  id: string;
-  name: string;
-  category: 'outerwear' | 'tops' | 'bottoms' | 'sets' | 'accessories';
-  price: number;
-  originalPrice?: number;
-  imageUrl: string;
-  secondaryImageUrl?: string;
-  description: string;
-  badge?: 'NEW' | 'HOT' | 'SALE' | 'LIMITED' | 'BESTSELLER';
-  sizes: ('S' | 'M' | 'L' | 'XL')[];
-  colors?: { name: string; hex: string }[];
-  rating: number;
-  reviewsCount: number;
-  isAvailable: boolean;
-  bundleItems?: BundleItem[];
-}
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
-export const PRODUCTS_DATA: Product[] = [
+const PRODUCTS_DATA = [
   {
-    id: "6a6efefaaf47fac2785da2aa",
     name: "Ocev Cyber-Graphic Oversized Hoodie",
     category: "tops",
     price: 119.00,
@@ -45,7 +25,6 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   },
   {
-    id: "6a6efefaaf47fac2785da2ad",
     name: "Tactical Multi-Pocket Cargo Trousers",
     category: "bottoms",
     price: 135.00,
@@ -59,7 +38,6 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   },
   {
-    id: "6a6efefaaf47fac2785da2ae",
     name: "Urban Matrix Distressed Leather Jacket",
     category: "outerwear",
     price: 289.00,
@@ -74,7 +52,6 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   },
   {
-    id: "6a6efefaaf47fac2785da2af",
     name: "Minimalist Sculpted Cropped Blazer Set",
     category: "sets",
     price: 195.00,
@@ -104,7 +81,6 @@ export const PRODUCTS_DATA: Product[] = [
     ]
   },
   {
-    id: "6a6efefaaf47fac2785da2b0",
     name: "Ocev Signature Chrome Chain Crossbody",
     category: "accessories",
     price: 79.00,
@@ -119,7 +95,6 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   },
   {
-    id: "6a6efefaaf47fac2785da2b1",
     name: "Monochrome Mesh Layered Maxi Dress",
     category: "sets",
     price: 158.00,
@@ -149,7 +124,6 @@ export const PRODUCTS_DATA: Product[] = [
     ]
   },
   {
-    id: "6a6efefaaf47fac2785da2b2",
     name: "Acid Wash Oversized Vintage Tee",
     category: "tops",
     price: 58.00,
@@ -163,7 +137,6 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   },
   {
-    id: "6a6efefaaf47fac2785da2b3",
     name: "Tech-Fleece Padded Bomber Jacket",
     category: "outerwear",
     price: 215.00,
@@ -178,3 +151,34 @@ export const PRODUCTS_DATA: Product[] = [
     isAvailable: true
   }
 ];
+
+const seedProducts = async () => {
+  try {
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ocevstudio';
+    await mongoose.connect(mongoUri);
+    console.log('Connected to MongoDB');
+
+    await Product.deleteMany({});
+    console.log('Cleared existing products');
+
+    const createdProducts = await Product.insertMany(PRODUCTS_DATA);
+    console.log('Seeded products successfully!');
+
+    // Output mapped IDs so we can copy them
+    const mapping = createdProducts.map((p, index) => ({
+      oldId: `prod-${index + 1}`,
+      newId: p._id.toString(),
+      name: p.name
+    }));
+
+    require('fs').writeFileSync('seeded_products.json', JSON.stringify(mapping, null, 2));
+    console.log('Mapping saved to seeded_products.json');
+
+    process.exit(0);
+  } catch (error) {
+    console.error('Error seeding products:', error);
+    process.exit(1);
+  }
+};
+
+seedProducts();
