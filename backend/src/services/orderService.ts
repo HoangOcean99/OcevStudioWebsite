@@ -7,7 +7,7 @@ export class OrderService extends BaseService<IPreOrder> {
   }
 
   async findMyOrders(userId: string) {
-    return await this.model.find({ user: userId });
+    return await this.model.find({ user: userId }).populate('items.product').sort({ createdAt: -1 });
   }
 }
 

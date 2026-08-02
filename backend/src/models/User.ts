@@ -9,11 +9,10 @@ export interface IUser extends Document {
   avatar?: string;
   phone?: string;
   address?: string;
-  sizingPreferences?: {
-    height: number;
-    weight: number;
-    bodyShape: 'Slim' | 'Athletic' | 'Average' | 'Heavy';
-  };
+  age?: number;
+  shirtSize?: string;
+  pantsSize?: string;
+  shoeSize?: string;
   savedOutfits: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
@@ -29,14 +28,10 @@ const UserSchema: Schema = new Schema(
     avatar: { type: String, default: '/default-avatar.svg' },
     phone: { type: String },
     address: { type: String },
-    sizingPreferences: {
-      height: { type: Number }, // in cm
-      weight: { type: Number }, // in kg
-      bodyShape: { 
-        type: String, 
-        enum: ['Slim', 'Athletic', 'Average', 'Heavy'] 
-      },
-    },
+    age: { type: Number },
+    shirtSize: { type: String },
+    pantsSize: { type: String },
+    shoeSize: { type: String },
     savedOutfits: [{ type: Schema.Types.ObjectId, ref: 'Outfit' }],
   },
   { timestamps: true }

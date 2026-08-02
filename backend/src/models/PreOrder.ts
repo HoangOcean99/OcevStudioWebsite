@@ -14,7 +14,7 @@ export interface IPreOrder extends Document {
     price: number;
   }[];
   totalAmount: number;
-  status: 'Ordered' | 'In Transit' | 'QC' | 'Shipping' | 'Delivered' | 'Cancelled';
+  status: 'Ordered' | 'Confirmed' | 'Packing' | 'Shipping' | 'Delivered' | 'Cancelled';
   paymentStatus: 'Pending' | 'Paid' | 'Failed';
   paymentMethod: 'VietQR' | 'COD';
   vietQrTransactionId?: string;
@@ -44,7 +44,7 @@ const PreOrderSchema: Schema = new Schema(
     totalAmount: { type: Number, required: true },
     status: { 
       type: String, 
-      enum: ['Ordered', 'In Transit', 'QC', 'Shipping', 'Delivered', 'Cancelled'], 
+      enum: ['Ordered', 'Confirmed', 'Packing', 'Shipping', 'Delivered', 'Cancelled'], 
       default: 'Ordered' 
     },
     paymentStatus: {

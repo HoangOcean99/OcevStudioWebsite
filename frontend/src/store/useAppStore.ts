@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { OutfitData } from '../components/OutfitCard';
 import { Product } from '../data/productsData';
+import api from '../lib/api';
 
 export interface CartItem extends OutfitData {
   cartItemId: string; // Unique ID for the cart item
@@ -24,7 +25,13 @@ interface AppState {
   sortBy: 'featured' | 'price-low' | 'price-high' | 'newest';
   viewMode: 'grid-4' | 'grid-3' | 'grid-2';
 
+  // API State
+  products: Product[];
+  isLoadingProducts: boolean;
+  errorProducts: string | null;
+
   // Actions
+  fetchProducts: () => Promise<void>;
   addToCart: (outfit: OutfitData, size?: string | null) => void;
   addPassedOutfit: (id: string) => void;
   updateCartItemSize: (cartItemId: string, size: string) => void;
@@ -57,6 +64,27 @@ export const useAppStore = create<AppState>((set, get) => ({
   searchQuery: '',
   sortBy: 'featured',
   viewMode: 'grid-4',
+
+  products: [],
+  isLoadingProducts: false,
+  errorProducts: null,
+
+  fetchProducts: async () => {
+    set({ isLoadingProducts: true, errorProducts: null });
+    try {
+      const { data } = await api.get('/products');
+      const mappedProducts = (data.items || []).map((p: any) => ({
+        ...p,
+        id: p.id || p._id
+      }));
+      set({ products: mappedProducts, isLoadingProducts: false });
+    } catch (error: any) {
+      set({ 
+        errorProducts: error.response?.data?.message || 'Failed to fetch products',
+        isLoadingProducts: false 
+      });
+    }
+  },
 
   addToCart: (outfit, size = null) => set((state) => ({ 
     cart: [...state.cart, { 

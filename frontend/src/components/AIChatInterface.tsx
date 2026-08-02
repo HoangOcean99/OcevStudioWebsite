@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
-import { PRODUCTS_DATA, Product } from "@/data/productsData";
+import { Product } from "@/data/productsData";
+import { useAppStore } from "@/store/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Bot, Send, User, Loader2 } from "lucide-react";
 
@@ -15,6 +16,7 @@ interface Message {
 
 export default function AIChatInterface() {
   const { t } = useTranslation("aiStylist");
+  const { products } = useAppStore();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "init",
@@ -53,13 +55,13 @@ export default function AIChatInterface() {
       // Dummy logic for demo
       const lowerText = text.toLowerCase();
       if (lowerText.includes("rave") || lowerText.includes("đi quẩy") || lowerText.includes("techno")) {
-        recommendedProducts = PRODUCTS_DATA.filter(p => ["prod-1", "prod-2"].includes(p.id));
+        recommendedProducts = products.filter(p => ["prod-1", "prod-2"].includes(p.id));
         aiText = "Based on your request, I recommend our Cyber-Graphic Hoodie and Tactical Cargo for maximum mobility and glow-in-the-dark presence.";
       } else if (lowerText.includes("winter") || lowerText.includes("mùa đông")) {
-        recommendedProducts = PRODUCTS_DATA.filter(p => ["prod-8", "prod-3"].includes(p.id));
+        recommendedProducts = products.filter(p => ["prod-8", "prod-3"].includes(p.id));
         aiText = "For winter streetwear, layered warmth is key. The Tech-Fleece Bomber or Matrix Leather Jacket are perfect statement pieces.";
       } else {
-        recommendedProducts = PRODUCTS_DATA.filter(p => p.category === "sets" || p.category === "tops").slice(0, 2);
+        recommendedProducts = products.filter(p => p.category === "sets" || p.category === "tops").slice(0, 2);
         aiText = "I've curated these minimalist and edgy pieces to match your vibe. They offer a versatile, futuristic look.";
       }
 

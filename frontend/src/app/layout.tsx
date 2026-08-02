@@ -6,6 +6,7 @@ import AIDrawer from "@/components/AIDrawer";
 import AIFloatingButton from "@/components/AIFloatingButton";
 import ShippingInfoModal from "@/components/ShippingInfoModal";
 import NextTopLoader from 'nextjs-toploader';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,13 @@ export default function RootLayout({
           <AIDrawer />
           <AIFloatingButton />
           <ShippingInfoModal />
+          <Toaster 
+            position="top-center"
+            toastOptions={{
+              className: 'dark:bg-zinc-800 dark:text-white',
+              duration: 4000,
+            }}
+          />
         </Providers>
       </body>
     </html>

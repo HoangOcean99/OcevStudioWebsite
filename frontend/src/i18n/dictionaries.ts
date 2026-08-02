@@ -8,6 +8,7 @@ export const dictionaries = {
       studio: "Phòng Thử Đồ",
       searchOutfits: "Tìm kiếm trang phục...",
       myOrders: "Đơn Hàng Của Tôi",
+      myProfile: "Hồ sơ của tôi",
       logout: "Đăng xuất",
       signIn: "Đăng nhập",
     },
@@ -49,6 +50,11 @@ export const dictionaries = {
       clearAllFilters: "Xóa tất cả bộ lọc",
       all: "Tất cả",
       wishlist: "Yêu thích",
+      catOuterwear: "Áo Khoác",
+      catTops: "Áo & Hoodie",
+      catBottoms: "Quần & Tiện ích",
+      catSets: "Đồ Bộ (Co-Ord)",
+      catAccessories: "Phụ kiện",
     },
     swipe: {
       title: "Quẹt Phải Để Mua, Trái Để Bỏ Qua",
@@ -98,18 +104,43 @@ export const dictionaries = {
       processing: "Đang xử lý mã hóa lượng tử...",
       successTitle: "Thành công!",
       successMessage: "Đơn hàng của bạn đã được đưa vào hệ thống giao hàng.",
-      viewOrders: "Xem tiến độ đơn hàng"
+      viewOrders: "Xem tiến độ đơn hàng",
+      orderSummary: "Tóm Tắt Đơn Hàng",
+      cartEmpty: "Giỏ hàng của bạn đang trống.",
+      subtotal: "Tạm tính",
+      shippingFee: "Phí vận chuyển Drone",
+      total: "Tổng cộng",
+      orderPlaced: "Đã đặt hàng thành công.",
+      paymentCrypto: "Crypto / Neural Pay",
+      paymentCryptoDesc: "Giao dịch lượng tử tức thì",
+      paymentCredit: "Thẻ Tín Dụng (Cổ điển)",
+      paymentCreditDesc: "Thanh toán tiền pháp định truyền thống"
     },
     profile: {
       title: "Hồ sơ của tôi",
+      updateInfo: "Cập nhật thông tin",
+      fullName: "Họ và tên",
+      email: "Email (Chỉ xem)",
+      age: "Tuổi",
+      phone: "Số điện thoại",
+      address: "Địa chỉ giao hàng",
+      shirtSize: "Size Áo",
+      pantsSize: "Size Quần",
+      shoeSize: "Size Giày",
+      saveChanges: "Lưu thay đổi",
+      saving: "Đang lưu...",
+      successUpdate: "Cập nhật thành công!"
+    },
+    orders: {
+      title: "Lịch sử Đơn Hàng",
       activeOrders: "Đơn hàng đang xử lý",
       orderId: "Mã ĐH",
       status: "Trạng thái",
-      timeline: {
-        packing: "Đang đóng gói tại trạm không gian",
-        shipping: "Đang vận chuyển bằng Drone",
-        delivered: "Đã giao thành công"
-      }
+      "timeline.pending": "Chờ xác nhận",
+      "timeline.confirmed": "Đã xác nhận",
+      "timeline.packing": "Đang đóng gói",
+      "timeline.shipping": "Đang vận chuyển",
+      "timeline.delivered": "Đã giao hàng"
     },
     studio: {
       title: "Phòng Thử Đồ Tương Lai",
@@ -142,6 +173,7 @@ export const dictionaries = {
       studio: "Fitting Room",
       searchOutfits: "Search futuristic outfits...",
       myOrders: "My Orders",
+      myProfile: "My Profile",
       logout: "Logout",
       signIn: "Sign In",
     },
@@ -183,6 +215,11 @@ export const dictionaries = {
       clearAllFilters: "Clear All Filters",
       all: "All Items",
       wishlist: "Wishlist",
+      catOuterwear: "Outerwear",
+      catTops: "Tops & Hoodies",
+      catBottoms: "Bottoms & Utility",
+      catSets: "Co-Ord Sets",
+      catAccessories: "Accessories",
     },
     swipe: {
       title: "Swipe Right To Buy, Left To Pass",
@@ -232,18 +269,43 @@ export const dictionaries = {
       processing: "Processing quantum encryption...",
       successTitle: "Success!",
       successMessage: "Your order has been injected into the delivery grid.",
-      viewOrders: "Track Order"
+      viewOrders: "Track Order",
+      orderSummary: "Order Summary",
+      cartEmpty: "Your cart is empty.",
+      subtotal: "Subtotal",
+      shippingFee: "Drone Shipping",
+      total: "Total",
+      orderPlaced: "Order successfully placed.",
+      paymentCrypto: "Crypto / Neural Pay",
+      paymentCryptoDesc: "Instant quantum transaction",
+      paymentCredit: "Credit Card (Legacy)",
+      paymentCreditDesc: "Traditional fiat payment"
     },
     profile: {
       title: "My Profile",
+      updateInfo: "Update Information",
+      fullName: "Full Name",
+      email: "Email (Read-only)",
+      age: "Age",
+      phone: "Phone Number",
+      address: "Shipping Address",
+      shirtSize: "Shirt Size",
+      pantsSize: "Pants Size",
+      shoeSize: "Shoe Size",
+      saveChanges: "Save Changes",
+      saving: "Saving...",
+      successUpdate: "Profile updated successfully!"
+    },
+    orders: {
+      title: "Order History",
       activeOrders: "Active Orders",
       orderId: "Order ID",
       status: "Status",
-      timeline: {
-        packing: "Packing at Space Station",
-        shipping: "In transit via Drone",
-        delivered: "Successfully delivered"
-      }
+      "timeline.pending": "Pending Confirmation",
+      "timeline.confirmed": "Confirmed",
+      "timeline.packing": "Packing",
+      "timeline.shipping": "Shipping",
+      "timeline.delivered": "Delivered"
     },
     studio: {
       title: "Futuristic Fitting Room",

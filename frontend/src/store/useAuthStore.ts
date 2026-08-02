@@ -8,7 +8,10 @@ export interface UserProfile {
   avatar: string;
   phone?: string;
   address?: string;
-  preferredSize?: string;
+  age?: number;
+  shirtSize?: string;
+  pantsSize?: string;
+  shoeSize?: string;
   role: 'admin' | 'user';
   token?: string;
 }
@@ -116,6 +119,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem('token');
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem("hasSkippedShippingModal");
+      window.location.href = '/';
     }
     set({ isLoggedIn: false, user: null });
   },

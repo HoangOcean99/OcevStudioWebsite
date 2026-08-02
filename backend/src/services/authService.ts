@@ -65,6 +65,10 @@ export class AuthService {
         user.avatar = avatar;
         isUpdated = true;
       }
+      if (user.name === 'Google User' && clientName) {
+        user.name = clientName;
+        isUpdated = true;
+      }
       if (isUpdated) {
         await user.save();
       }

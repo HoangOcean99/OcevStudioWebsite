@@ -7,14 +7,15 @@ import CartDrawer from "@/components/CartDrawer";
 import ProductQuickViewModal from "@/components/ProductQuickViewModal";
 import ProductCard from "@/components/ProductCard";
 import OutfitSwiper from "@/components/OutfitSwiper";
-import { PRODUCTS_DATA } from "@/data/productsData";
+import { useAppStore } from "@/store/useAppStore";
 import { ArrowRight, Flame, Sparkles, ShieldCheck, Zap, Layers, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function LandingPage() {
   const { t } = useTranslation('landing');
-  const featuredProducts = PRODUCTS_DATA.slice(0, 4);
+  const products = useAppStore(state => state.products);
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">

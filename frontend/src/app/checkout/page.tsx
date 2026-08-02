@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
+import toast from 'react-hot-toast';
 import Footer from "@/components/Footer";
 import { useAppStore } from "@/store/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -77,7 +78,7 @@ export default function CheckoutPage() {
       clearCart();
     } catch (error) {
       console.error("Order failed:", error);
-      alert("There was an error placing your order. Please try again.");
+      toast.error("There was an error placing your order. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -175,15 +176,15 @@ export default function CheckoutPage() {
                   <div className="p-4 border-2 border-black dark:border-white rounded-xl bg-gray-50 dark:bg-black flex items-center gap-4 cursor-pointer">
                     <div className="w-4 h-4 rounded-full border-4 border-black dark:border-white bg-white dark:bg-black"></div>
                     <div>
-                      <p className="font-bold text-sm">Crypto / Neural Pay</p>
-                      <p className="text-xs text-gray-500">Instant quantum transaction</p>
+                      <p className="font-bold text-sm">{t("paymentCrypto")}</p>
+                      <p className="text-xs text-gray-500">{t("paymentCryptoDesc")}</p>
                     </div>
                   </div>
                   <div className="p-4 border border-gray-200 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 flex items-center gap-4 cursor-pointer opacity-50">
                     <div className="w-4 h-4 rounded-full border border-gray-300 dark:border-zinc-600"></div>
                     <div>
-                      <p className="font-bold text-sm">Credit Card (Legacy)</p>
-                      <p className="text-xs text-gray-500">Traditional fiat payment</p>
+                      <p className="font-bold text-sm">{t("paymentCredit")}</p>
+                      <p className="text-xs text-gray-500">{t("paymentCreditDesc")}</p>
                     </div>
                   </div>
                 </div>
@@ -235,16 +236,16 @@ export default function CheckoutPage() {
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-gray-100 dark:border-zinc-800 shadow-xl sticky top-28">
               <h3 className="text-sm font-black uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-zinc-800 pb-4">
-                Order Summary
+                {t("orderSummary")}
               </h3>
               
               {cart.length === 0 && step !== 3 ? (
-                <p className="text-sm text-gray-500 text-center py-4">Your cart is empty.</p>
+                <p className="text-sm text-gray-500 text-center py-4">{t("cartEmpty")}</p>
               ) : (
                 <div className="space-y-4 mb-6">
                   {step === 3 ? (
                     <div className="text-center p-4 bg-gray-50 dark:bg-zinc-800/50 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300">
-                      Order successfully placed.
+                      {t("orderPlaced")}
                     </div>
                   ) : (
                     cart.map(item => (
@@ -266,15 +267,15 @@ export default function CheckoutPage() {
               {step !== 3 && (
                 <div className="border-t border-gray-100 dark:border-zinc-800 pt-4 space-y-2">
                   <div className="flex justify-between text-xs text-gray-500 font-medium">
-                    <span>Subtotal</span>
+                    <span>{t("subtotal")}</span>
                     <span>${totalAmount.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-xs text-gray-500 font-medium">
-                    <span>Drone Shipping</span>
+                    <span>{t("shippingFee")}</span>
                     <span>$15.00</span>
                   </div>
                   <div className="flex justify-between text-lg font-black pt-2">
-                    <span>Total</span>
+                    <span>{t("total")}</span>
                     <span>${(totalAmount + (cart.length > 0 ? 15 : 0)).toFixed(2)}</span>
                   </div>
                 </div>

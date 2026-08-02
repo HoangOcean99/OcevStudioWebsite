@@ -1,7 +1,6 @@
 "use client";
 
 import { useAppStore } from "@/store/useAppStore";
-import { PRODUCTS_DATA } from "@/data/productsData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
@@ -25,21 +24,23 @@ export default function ShopPage() {
     viewMode,
     setViewMode,
     wishlist,
+    products,
+    isLoadingProducts,
   } = useAppStore();
 
   const categories = [
     { id: "all", label: t("all") },
-    { id: "outerwear", label: "Outerwear" },
-    { id: "tops", label: "Tops & Hoodies" },
-    { id: "bottoms", label: "Bottoms & Utility" },
-    { id: "sets", label: "Co-Ord Sets" },
-    { id: "accessories", label: "Accessories" },
+    { id: "outerwear", label: t("catOuterwear") },
+    { id: "tops", label: t("catTops") },
+    { id: "bottoms", label: t("catBottoms") },
+    { id: "sets", label: t("catSets") },
+    { id: "accessories", label: t("catAccessories") },
     { id: "wishlist", label: `${t("wishlist")} (${wishlist.length})`, isWishlist: true },
   ];
 
   // Filter & Sort Products logic
   const filteredProducts = useMemo(() => {
-    return PRODUCTS_DATA.filter((product) => {
+    return products.filter((product) => {
       // Category filter
       if (selectedCategory === "wishlist") {
         if (!wishlist.includes(product.id)) return false;
@@ -192,18 +193,22 @@ export default function ShopPage() {
 
         </div>
 
-        {/* Product Catalog Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className={`grid ${gridClass} gap-6`}>
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        ) : (
-          <div className="py-24 flex flex-col items-center justify-center bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-gray-300 dark:border-zinc-800 text-center p-6">
-            <Search className="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" />
+          {/* Products Grid / Loading State */}
+          {isLoadingProducts ? (
+            <div className="flex justify-center py-20">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+            </div>
+          ) : filteredProducts.length > 0 ? (
+            <div className={`grid ${gridClass} gap-4 sm:gap-6`}>
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-24 bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-dashed border-gray-200 dark:border-zinc-800 p-6">
+            <Search className="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4 mx-auto" />
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{t("noProducts")}</h3>
-            <p className="text-xs text-gray-500 max-w-sm mb-6">
+            <p className="text-xs text-gray-500 max-w-sm mb-6 mx-auto">
               {t("noProductsDesc")}
             </p>
             <button

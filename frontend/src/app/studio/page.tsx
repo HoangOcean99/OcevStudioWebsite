@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { PRODUCTS_DATA, Product } from "@/data/productsData";
+import { Product } from "@/data/productsData";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/store/useAppStore";
 import { ShoppingBag, X, RefreshCcw, Layers, Upload, Scan, Wand2 } from "lucide-react";
@@ -14,7 +14,7 @@ type Mode = "moodboard" | "ai";
 
 export default function MixMatchStudioPage() {
   const { t } = useTranslation("studio");
-  const { addToCart, toggleCart } = useAppStore();
+  const { addToCart, toggleCart, products, isLoadingProducts } = useAppStore();
 
   const [mode, setMode] = useState<Mode>("moodboard");
   const [selectedOuterwear, setSelectedOuterwear] = useState<Product | null>(null);
@@ -29,7 +29,7 @@ export default function MixMatchStudioPage() {
   const [aiResult, setAiResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const filteredProducts = PRODUCTS_DATA.filter(p => p.category === activeTab);
+  const filteredProducts = products.filter(p => p.category === activeTab);
 
   const getSelectedProductForTab = (category: Category) => {
     switch (category) {
@@ -305,19 +305,24 @@ export default function MixMatchStudioPage() {
           </div>
 
           {/* Product Grid */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {filteredProducts.map((product) => {
-                const isSelected = getSelectedProductForTab(activeTab)?.id === product.id;
-                return (
-                  <div
-                    key={product.id}
-                    onClick={() => handleSelectProduct(product)}
-                    className={`relative rounded-2xl overflow-hidden cursor-pointer border-2 transition-all group ${
-                      isSelected ? "border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]" : "border-transparent hover:border-gray-300 dark:hover:border-zinc-700 bg-gray-100 dark:bg-zinc-900"
-                    }`}
-                  >
-                    <div className="relative aspect-[3/4] w-full">
+          <div className="flex-1 overflow-y-auto p-4">
+            {isLoadingProducts ? (
+              <div className="flex justify-center py-20">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+              </div>
+            ) : filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {filteredProducts.map((product) => {
+                  const isSelected = getSelectedProductForTab(activeTab)?.id === product.id;
+                  return (
+                    <div
+                      key={product.id}
+                      onClick={() => handleSelectProduct(product)}
+                      className={`relative rounded-2xl overflow-hidden cursor-pointer border-2 transition-all group ${
+                        isSelected ? "border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]" : "border-transparent hover:border-gray-300 dark:hover:border-zinc-700 bg-gray-100 dark:bg-zinc-900"
+                      }`}
+                    >
+                      <div className="relative aspect-[3/4] w-full">
                       <Image src={product.imageUrl} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       {isSelected && (
                         <div className="absolute inset-0 bg-blue-500/20 backdrop-blur-[2px] flex items-center justify-center">

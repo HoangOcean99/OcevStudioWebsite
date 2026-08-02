@@ -14,6 +14,10 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
       avatar: user.avatar,
       phone: user.phone,
       address: user.address,
+      age: user.age,
+      shirtSize: user.shirtSize,
+      pantsSize: user.pantsSize,
+      shoeSize: user.shoeSize,
       token: authService.generateToken(user._id as string, user.role),
     });
   } catch (error: any) {
@@ -36,6 +40,10 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
       avatar: user.avatar,
       phone: user.phone,
       address: user.address,
+      age: user.age,
+      shirtSize: user.shirtSize,
+      pantsSize: user.pantsSize,
+      shoeSize: user.shoeSize,
       token: authService.generateToken(user._id as string, user.role),
     });
   } catch (error: any) {
@@ -64,6 +72,10 @@ export const googleLogin = asyncHandler(async (req: Request, res: Response) => {
       avatar: user.avatar,
       phone: user.phone,
       address: user.address,
+      age: user.age,
+      shirtSize: user.shirtSize,
+      pantsSize: user.pantsSize,
+      shoeSize: user.shoeSize,
       token: authService.generateToken(user._id as string, user.role),
     });
   } catch (error: any) {
@@ -92,9 +104,10 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
     user.name = req.body.name || user.name;
     user.phone = req.body.phone || user.phone;
     user.address = req.body.address || user.address;
-    if (req.body.sizingPreferences) {
-      user.sizingPreferences = req.body.sizingPreferences;
-    }
+    if (req.body.age !== undefined) user.age = req.body.age;
+    if (req.body.shirtSize !== undefined) user.shirtSize = req.body.shirtSize;
+    if (req.body.pantsSize !== undefined) user.pantsSize = req.body.pantsSize;
+    if (req.body.shoeSize !== undefined) user.shoeSize = req.body.shoeSize;
 
     const updatedUser = await user.save();
     res.json({
@@ -105,7 +118,10 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
       avatar: updatedUser.avatar,
       phone: updatedUser.phone,
       address: updatedUser.address,
-      sizingPreferences: updatedUser.sizingPreferences,
+      age: updatedUser.age,
+      shirtSize: updatedUser.shirtSize,
+      pantsSize: updatedUser.pantsSize,
+      shoeSize: updatedUser.shoeSize,
       token: authService.generateToken(updatedUser._id as string, updatedUser.role),
     });
   } else {

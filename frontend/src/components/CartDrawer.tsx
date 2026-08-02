@@ -3,6 +3,7 @@
 import { useAppStore } from "../store/useAppStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import toast from 'react-hot-toast';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -139,7 +140,7 @@ export default function CartDrawer() {
                   onClick={() => {
                     const missingSizes = cart.some(item => !item.size);
                     if (missingSizes) {
-                      alert("Please select a size for all items before checking out.");
+                      toast.error("Please select a size for all items before checking out.");
                       return;
                     }
                     toggleCart();

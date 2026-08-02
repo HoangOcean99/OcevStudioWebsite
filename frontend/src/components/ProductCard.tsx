@@ -12,6 +12,14 @@ interface ProductCardProps {
   product: Product;
 }
 
+const getValidImageUrl = (url: string | undefined): string => {
+  if (!url) return "https://placehold.co/400x500/eeeeee/999999?text=No+Image";
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
+    return url;
+  }
+  return "https://placehold.co/400x500/eeeeee/999999?text=Invalid+URL";
+};
+
 export default function ProductCard({ product }: ProductCardProps) {
   const { t } = useTranslation('common');
   const { addToCart, toggleWishlist, isInWishlist, setQuickViewProduct } = useAppStore();
@@ -49,8 +57,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Main Image */}
         <Image
-          src={isHovered && product.secondaryImageUrl ? product.secondaryImageUrl : product.imageUrl}
-          alt={product.name}
+          src={getValidImageUrl((isHovered && product.secondaryImageUrl) ? product.secondaryImageUrl : product.imageUrl)}
+          alt={product.name || "Product"}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
@@ -114,56 +122,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Price */}
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-lg font-black text-gray-900 dark:text-white">
-              ${product.price.toFixed(2)}
+              ${(product.price || 0).toFixed(2)}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && !isNaN(product.originalPrice) && (
               <span className="text-xs text-gray-400 line-through font-medium">
-                ${product.originalPrice.toFixed(2)}
+                ${Number(product.originalPrice).toFixed(2)}
               </span>
             )}
           </div>
         </div>
 
-        {/* Size Picker & Add to Cart */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-          {/* Size Pills */}
-          <div className="flex gap-1">
-            {product.sizes.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSelectedSize(s)}
-                className={`w-6 h-6 rounded-lg text-[10px] font-bold flex items-center justify-center border transition-all ${selectedSize === s
-                    ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
-                    : "bg-gray-50 text-gray-600 border-gray-200 dark:bg-zinc-800 dark:text-gray-400 dark:border-zinc-700 hover:border-gray-400"
-                  }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-
-          {/* Add to Cart Button */}
-          <button
-            onClick={handleAddToCart}
-            className={`p-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${addedSuccess
-                ? "bg-emerald-600 text-white"
-                : "bg-black text-white dark:bg-white dark:text-black hover:scale-105 active:scale-95"
-              }`}
-          >
-            {addedSuccess ? (
-              <>
-                <Check className="w-3.5 h-3.5" /> Added!
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="w-3.5 h-3.5" />
-                {t("addToCart")}
-              </>
-            )}
-          </button>
-        </div>
-
-      </div>
+        {/* Removed Quick Add interface per user request */}      </div>
     </div>
   );
 }

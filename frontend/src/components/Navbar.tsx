@@ -207,41 +207,56 @@ export default function Navbar() {
 
               {/* User Dropdown */}
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-zinc-800 p-3 z-50 animate-in fade-in slide-in-from-top-2">
-                  <div className="p-2 border-b border-gray-100 dark:border-zinc-800 mb-2">
+                <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-zinc-800 p-2 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="p-3 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl mb-2">
                     <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{user.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                    <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 rounded-md">
-                      Size: {user.preferredSize}
-                    </span>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
                   </div>
-                  <Link
-                    href="/profile"
-                    onClick={() => setIsUserMenuOpen(false)}
-                    className="flex items-center gap-2 w-full p-2 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-xl transition-colors"
-                  >
-                    {t("myOrders")}
-                  </Link>
-                  {user.role === 'admin' && (
+                  
+                  <div className="px-1 space-y-1">
                     <Link
-                      href="/admin"
+                      href="/profile"
                       onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-2 w-full p-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors mt-1"
+                      className="flex items-center gap-3 w-full p-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
                     >
-                      <Shield className="w-3.5 h-3.5" />
-                      Trang Quản Trị
+                      <User className="w-4 h-4 text-gray-400" />
+                      {t("myProfile")}
                     </Link>
+                    <Link
+                      href="/orders"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 w-full p-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+                    >
+                      <ShoppingBag className="w-4 h-4 text-gray-400" />
+                      {t("myOrders")}
+                    </Link>
+                  </div>
+                  
+                  {user.role === 'admin' && (
+                    <div className="px-1 mt-1 border-t border-gray-100 dark:border-zinc-800 pt-1">
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 w-full p-2.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors"
+                      >
+                        <Shield className="w-4 h-4" />
+                        Trang Quản Trị
+                      </Link>
+                    </div>
                   )}
-                  <button
-                    onClick={() => {
-                      logout();
-                      setIsUserMenuOpen(false);
-                    }}
-                    className="flex items-center gap-2 w-full p-2 text-xs font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-colors mt-1"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    {t("logout")}
-                  </button>
+                  
+                  <div className="px-1 mt-1 border-t border-gray-100 dark:border-zinc-800 pt-1">
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="flex items-center gap-3 w-full p-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {t("logout")}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

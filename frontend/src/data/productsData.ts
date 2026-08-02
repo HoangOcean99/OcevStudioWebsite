@@ -3,7 +3,12 @@ export interface BundleItem {
   name: string;
   price: number;
   imageUrl: string;
-  sizes: ('S' | 'M' | 'L' | 'XL')[];
+  type?: 'hat' | 'accessories' | 'shoes' | 'bottom' | 'top' | 'outerwear';
+  description?: string;
+  hasSize?: boolean;
+  colorImages?: Record<string, string | string[]>;
+  images?: string[];
+  sizes: string[];
 }
 
 export interface Product {
@@ -14,9 +19,10 @@ export interface Product {
   originalPrice?: number;
   imageUrl: string;
   secondaryImageUrl?: string;
+  images?: string[];
   description: string;
   badge?: 'NEW' | 'HOT' | 'SALE' | 'LIMITED' | 'BESTSELLER';
-  sizes: ('S' | 'M' | 'L' | 'XL')[];
+  sizes: string[];
   colors?: { name: string; hex: string }[];
   rating: number;
   reviewsCount: number;
@@ -35,7 +41,7 @@ export const PRODUCTS_DATA: Product[] = [
     secondaryImageUrl: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?q=80&w=1000&auto=format&fit=crop",
     description: "Heavyweight 450gsm French Terry cotton hoodie with custom cybernetic high-density screenprint. Drop-shoulder relaxed fit engineered for modern streetwear enthusiasts.",
     badge: "HOT",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     colors: [
       { name: "Obsidian Black", hex: "#121212" },
       { name: "Acid Wash Grey", hex: "#555555" }
@@ -53,7 +59,7 @@ export const PRODUCTS_DATA: Product[] = [
     secondaryImageUrl: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?q=80&w=1000&auto=format&fit=crop",
     description: "Water-resistant ripstop nylon utility trousers featuring 8 modular pockets, adjustable ankle straps, and ergonomic knee darting.",
     badge: "NEW",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     rating: 4.8,
     reviewsCount: 24,
     isAvailable: true
@@ -68,7 +74,7 @@ export const PRODUCTS_DATA: Product[] = [
     secondaryImageUrl: "https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=1000&auto=format&fit=crop",
     description: "Hand-finished distressed eco-leather biker jacket with custom gunmetal hardware, asymmetric zipper closure, and quilted satin lining.",
     badge: "LIMITED",
-    sizes: ["M", "L", "XL"],
+    sizes: ["M", "L", "XL", "2XL"],
     rating: 5.0,
     reviewsCount: 19,
     isAvailable: true
@@ -157,7 +163,7 @@ export const PRODUCTS_DATA: Product[] = [
     secondaryImageUrl: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000&auto=format&fit=crop",
     description: "260gsm combed cotton short sleeve T-shirt with heavy vintage enzyme wash effect and subtle tonal Ocev crest embroidery on chest.",
     badge: "BESTSELLER",
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     rating: 4.9,
     reviewsCount: 88,
     isAvailable: true
@@ -175,6 +181,19 @@ export const PRODUCTS_DATA: Product[] = [
     sizes: ["M", "L", "XL"],
     rating: 4.8,
     reviewsCount: 30,
+    isAvailable: true
+  },
+  {
+    id: "6a6efefaaf47fac2785da2b4",
+    name: "Ocev Cyberpunk Platform Sneakers",
+    category: "accessories",
+    price: 185.00,
+    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop",
+    description: "Futuristic platform sneakers with shock-absorbing soles, reflective cybernetic accents, and a laceless magnetic closure system.",
+    badge: "NEW",
+    sizes: ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44"],
+    rating: 4.9,
+    reviewsCount: 12,
     isAvailable: true
   }
 ];
