@@ -69,14 +69,19 @@ class OrderController extends BaseController<IPreOrder> {
 
   updateOrderStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { status, paymentStatus, vietQrTransactionId } = req.body;
-    const order = await this.orderService.findById(req.params.id);
+    
+    const updateFields: any = {};
+    if (status) updateFields.status = status;
+    if (paymentStatus) updateFields.paymentStatus = paymentStatus;
+    if (vietQrTransactionId) updateFields.vietQrTransactionId = vietQrTransactionId;
 
-    if (order) {
-      if (status) order.status = status;
-      if (paymentStatus) order.paymentStatus = paymentStatus;
-      if (vietQrTransactionId) order.vietQrTransactionId = vietQrTransactionId;
+    const updatedOrder = await this.orderService.model.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateFields },
+      { new: true }
+    );
 
-      const updatedOrder = await order.save();
+    if (updatedOrder) {
       res.json(updatedOrder);
     } else {
       res.status(404);

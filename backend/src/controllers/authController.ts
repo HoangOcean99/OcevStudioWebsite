@@ -3,57 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { authService } from '../services/authService';
 import User from '../models/User';
 
-export const register = asyncHandler(async (req: Request, res: Response) => {
-  try {
-    const user = await authService.registerUser(req.body);
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      avatar: user.avatar,
-      phone: user.phone,
-      address: user.address,
-      age: user.age,
-      shirtSize: user.shirtSize,
-      pantsSize: user.pantsSize,
-      shoeSize: user.shoeSize,
-      token: authService.generateToken(user._id as string, user.role),
-    });
-  } catch (error: any) {
-    if (error.message === 'User already exists') {
-      res.status(400);
-      throw new Error(error.message);
-    }
-    throw error;
-  }
-});
 
-export const login = asyncHandler(async (req: Request, res: Response) => {
-  try {
-    const user = await authService.loginUser(req.body);
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      avatar: user.avatar,
-      phone: user.phone,
-      address: user.address,
-      age: user.age,
-      shirtSize: user.shirtSize,
-      pantsSize: user.pantsSize,
-      shoeSize: user.shoeSize,
-      token: authService.generateToken(user._id as string, user.role),
-    });
-  } catch (error: any) {
-    if (error.message === 'Invalid email or password') {
-      res.status(401);
-      throw new Error(error.message);
-    }
-    throw error;
-  }
-});
 
 export const googleLogin = asyncHandler(async (req: Request, res: Response) => {
   try {
@@ -81,6 +31,10 @@ export const googleLogin = asyncHandler(async (req: Request, res: Response) => {
   } catch (error: any) {
     if (error.message === 'Invalid Google token') {
       res.status(400);
+      throw new Error(error.message);
+    }
+    if (error.message.includes('khóa')) {
+      res.status(403);
       throw new Error(error.message);
     }
     throw error;

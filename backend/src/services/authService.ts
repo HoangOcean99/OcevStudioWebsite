@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import User, { IUser } from '../models/User';
@@ -12,33 +11,6 @@ export class AuthService {
     });
   }
 
-  async registerUser(data: Partial<IUser>) {
-    const { name, email, password } = data;
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      throw new Error('User already exists');
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password as string, salt);
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-    return user;
-  }
-
-  async loginUser(data: Partial<IUser>) {
-    const { email, password } = data;
-    const user = await User.findOne({ email });
-
-    if (user && user.password && (await bcrypt.compare(password as string, user.password))) {
-      return user;
-    }
-    throw new Error('Invalid email or password');
-  }
 
   async googleLogin(token: string, clientName?: string, clientAvatar?: string) {
     const ticket = await googleClient.verifyIdToken({
@@ -56,6 +28,10 @@ export class AuthService {
     let user = await User.findOne({ email });
 
     if (user) {
+      if (user.isBanned) {
+        throw new Error('Tài khoản của bạn đã bị khóa');
+      }
+      
       let isUpdated = false;
       if (!user.googleId) {
         user.googleId = googleId;

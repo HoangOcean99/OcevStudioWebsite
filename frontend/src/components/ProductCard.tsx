@@ -48,12 +48,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div
-      className="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800/80 hover:shadow-2xl transition-all duration-300"
+      className="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-zinc-800/80 hover:shadow-xl transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link href={`/shop/${product.id}`} className="relative w-full aspect-[4/5] bg-gray-100 dark:bg-zinc-800 overflow-hidden cursor-pointer block">
+      <Link href={`/shop/${product.id}`} className="relative w-full aspect-[4/5] bg-gray-50 dark:bg-zinc-950 overflow-hidden cursor-pointer block">
 
         {/* Main Image */}
         <Image
@@ -63,13 +63,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
-        {/* Badge Pill */}
+        {/* Badge */}
         {product.badge && (
-          <span className={`absolute top-4 left-4 px-3 py-1 text-[10px] font-extrabold tracking-widest rounded-full text-white shadow-md uppercase backdrop-blur-md ${product.badge === 'HOT' ? 'bg-gradient-to-r from-orange-500 to-red-600' :
-              product.badge === 'NEW' ? 'bg-gradient-to-r from-blue-600 to-indigo-600' :
-                product.badge === 'SALE' ? 'bg-gradient-to-r from-emerald-500 to-teal-700' :
-                  'bg-black/80 dark:bg-white/80 dark:text-black'
-            }`}>
+          <span className="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-bold tracking-wider bg-black/90 text-white dark:bg-white/90 dark:text-black rounded uppercase backdrop-blur-sm shadow-sm">
             {product.badge}
           </span>
         )}
@@ -80,59 +76,62 @@ export default function ProductCard({ product }: ProductCardProps) {
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className="absolute top-4 right-4 p-2.5 rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-md text-gray-700 dark:text-white hover:scale-110 active:scale-95 transition-all shadow-lg z-10"
+          className="absolute top-3 right-3 p-2 bg-white/80 dark:bg-black/80 rounded-full text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-all z-10 shadow-sm backdrop-blur-sm hover:scale-110 active:scale-95"
           title="Wishlist"
         >
           <Heart className={`w-4 h-4 transition-colors ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
         </button>
 
-        <div className="absolute inset-x-4 bottom-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        {/* Bundle Indicator */}
+        {product.bundleItems && product.bundleItems.length > 0 && (
+          <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/90 dark:bg-black/90 backdrop-blur-md rounded text-[10px] font-bold tracking-widest text-black dark:text-white uppercase shadow-sm z-10 flex items-center gap-1.5">
+            <ShoppingBag className="w-3 h-3" /> {product.bundleItems.length} MÓN
+          </div>
+        )}
+
+        {/* Quick View Overlay */}
+        <div className="absolute inset-x-4 bottom-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 z-10">
           <div
             onClick={(e) => {
               e.preventDefault();
               setQuickViewProduct(product);
             }}
-            className="flex-1 py-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md text-black dark:text-white text-xs font-bold rounded-2xl shadow-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-2.5 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md text-black dark:text-white text-xs font-bold rounded-xl shadow-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-2"
           >
-            <Search className="w-3.5 h-3.5" /> {t("viewDetails")}
+            <Search className="w-3.5 h-3.5" /> Xem Chi Tiết
           </div>
         </div>
       </Link>
 
       {/* Details Section */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category & Rating */}
-          <div className="flex justify-between items-center text-xs text-gray-400 mb-1.5 uppercase tracking-wider font-semibold">
-            <span>{product.category}</span>
-            <div className="flex items-center gap-1 text-amber-500">
-              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-              <span className="text-gray-700 dark:text-gray-300 font-bold text-[11px]">{product.rating}</span>
-            </div>
+          {/* Category */}
+          <div className="text-[10px] text-gray-400 mb-1.5 uppercase tracking-widest font-semibold">
+            {product.category}
           </div>
 
-          {/* Product Title */}
-          <Link
-            href={`/shop/${product.id}`}
-            className="font-bold text-sm text-gray-900 dark:text-white line-clamp-1 hover:text-gray-600 dark:hover:text-gray-300 transition-colors block mt-1"
-          >
-            {product.name}
-          </Link>
+          <div className="flex justify-between items-start gap-2">
+            <Link
+              href={`/shop/${product.id}`}
+              className="font-bold text-sm text-gray-900 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 transition-colors block flex-1 leading-snug line-clamp-1"
+            >
+              {product.name}
+            </Link>
+          </div>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-lg font-black text-gray-900 dark:text-white">
-              ${(product.price || 0).toFixed(2)}
+          <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-sm font-bold text-gray-900 dark:text-gray-100">
+              {(product.price || 0).toLocaleString("vi-VN")} ₫
             </span>
             {product.originalPrice && !isNaN(product.originalPrice) && (
               <span className="text-xs text-gray-400 line-through font-medium">
-                ${Number(product.originalPrice).toFixed(2)}
+                {Number(product.originalPrice).toLocaleString("vi-VN")} ₫
               </span>
             )}
           </div>
         </div>
-
-        {/* Removed Quick Add interface per user request */}      </div>
+      </div>
     </div>
   );
 }

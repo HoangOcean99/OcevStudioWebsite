@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 // Base API configuration
 const api = axios.create({
@@ -26,11 +27,27 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Optionally handle 401 Unauthorized globally here (e.g., redirect to login)
-    if (error.response?.status === 401) {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        // window.location.href = '/login'; // Or use Next router if needed
+    // Optionally handle 401 Unauthorized or 403 Forbidden globally here
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      const msg = error.response?.data?.message || '';
+      
+      if (error.response?.status === 403 && msg.includes('Tài khoản của bạn đã bị khóa')) {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+          sessionStorage.removeItem('hasSkippedShippingModal');
+          
+          if (window.location.pathname !== '/login') {
+            toast.error('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.');
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 1500);
+          }
+        }
+      } else if (error.response?.status === 401) {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+          sessionStorage.removeItem('hasSkippedShippingModal');
+        }
       }
     }
     return Promise.reject(error);

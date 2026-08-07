@@ -119,8 +119,29 @@ export default function MixMatchStudioPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 flex flex-col lg:flex-row gap-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 flex flex-col lg:flex-row gap-8 relative">
         
+        {/* COMING SOON OVERLAY */}
+        <div className="absolute inset-0 z-[100] backdrop-blur-md bg-white/50 dark:bg-black/60 flex flex-col items-center justify-center rounded-3xl border border-white/20 dark:border-white/10 mx-4 my-8 overflow-hidden pointer-events-auto">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10" />
+          <div className="relative z-10 flex flex-col items-center gap-6 p-8 max-w-md text-center bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white dark:border-zinc-700">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <Wand2 className="w-10 h-10 text-white animate-pulse" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-3">
+                Sắp Ra Mắt
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 font-medium leading-relaxed">
+                Tính năng Phòng Thử Đồ Ảo (Mix & Match AI) đang được chúng tôi hoàn thiện. Bạn sẽ sớm có thể tự do ướm thử mọi outfit cực chất ngay tại nhà!
+              </p>
+            </div>
+            <a href="/" className="mt-2 px-8 py-3 bg-black dark:bg-white text-white dark:text-black font-bold uppercase tracking-widest text-xs rounded-full hover:scale-105 hover:shadow-lg transition-all active:scale-95">
+              Về Trang Chủ
+            </a>
+          </div>
+        </div>
+
         {/* Left Pane: Canvas / AI Result */}
         <div className="w-full lg:w-5/12 flex flex-col gap-4">
           
@@ -261,7 +282,7 @@ export default function MixMatchStudioPage() {
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white dark:from-zinc-900 dark:via-zinc-900 to-transparent flex items-end justify-between z-50 pt-16">
                 <div>
                   <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{t("totalPrice") || "Total Combo"}</p>
-                  <p className="text-3xl font-black">${totalPrice.toFixed(2)}</p>
+                  <p className="text-3xl font-black">{totalPrice.toLocaleString("vi-VN")} ₫</p>
                 </div>
                 <button onClick={resetAll} disabled={selectedItems.length === 0} className="p-3 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors disabled:opacity-50" title="Reset Canvas">
                   <RefreshCcw className="w-5 h-5" />
@@ -332,14 +353,13 @@ export default function MixMatchStudioPage() {
                     </div>
                     <div className="p-3 bg-white dark:bg-zinc-950">
                       <p className="text-xs font-bold truncate">{product.name}</p>
-                      <p className="text-xs text-gray-500 font-medium mt-1">${product.price.toFixed(2)}</p>
+                      <p className="text-xs text-gray-500 font-medium mt-1">{product.price.toLocaleString("vi-VN")} ₫</p>
                     </div>
                   </div>
                 );
               })}
             </div>
-            
-            {filteredProducts.length === 0 && (
+            ) : (
               <div className="text-center text-gray-500 py-12">No items available in this category.</div>
             )}
           </div>

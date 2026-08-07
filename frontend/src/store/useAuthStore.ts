@@ -12,7 +12,7 @@ export interface UserProfile {
   shirtSize?: string;
   pantsSize?: string;
   shoeSize?: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'staff' | 'user';
   token?: string;
 }
 

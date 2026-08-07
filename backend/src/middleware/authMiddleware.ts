@@ -16,7 +16,12 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as JwtPayload;
 
-      (req as any).user = await User.findById(decoded.id).select('-password');
+      const user = await User.findById(decoded.id).select('-password');
+      if (user && user.isBanned) {
+        res.status(403).json({ message: 'Tài khoản của bạn đã bị khóa' });
+        return;
+      }
+      (req as any).user = user;
 
       next();
     } catch (error) {
@@ -24,7 +29,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
     }
   }
 
-  if (!token) {
+  if (!token && !res.headersSent) {
     res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
@@ -36,7 +41,10 @@ export const optionalAuth = async (req: Request, res: Response, next: NextFuncti
     try {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as JwtPayload;
-      (req as any).user = await User.findById(decoded.id).select('-password');
+      const user = await User.findById(decoded.id).select('-password');
+      if (user && !user.isBanned) {
+        (req as any).user = user;
+      }
     } catch (error) {
       // Ignore token errors for optional auth
     }
@@ -45,9 +53,10 @@ export const optionalAuth = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const admin = (req: Request, res: Response, next: NextFunction): void => {
-  if ((req as any).user && (req as any).user.role === 'admin') {
+  const user = (req as any).user;
+  if (user && (user.role === 'admin' || user.role === 'staff')) {
     next();
   } else {
-    res.status(401).json({ message: 'Not authorized as an admin' });
+    res.status(401).json({ message: 'Not authorized as an admin or staff' });
   }
 };

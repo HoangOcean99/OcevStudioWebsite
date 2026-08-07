@@ -14,7 +14,8 @@ export const validate = (schema: AnyZodObject) => {
       if (error instanceof ZodError) {
         res.status(400);
         // Pass a formatted string or the first error message to the global handler
-        next(new Error(`Validation failed: ${error.errors.map(e => e.message).join(', ')}`));
+        const errorsList = error.errors || error.issues || [];
+        next(new Error(`Validation failed: ${errorsList.map((e: any) => e.message).join(', ')}`));
       } else {
         next(error);
       }

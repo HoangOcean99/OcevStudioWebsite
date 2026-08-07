@@ -14,20 +14,20 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   const router = useRouter();
   const { isLoggedIn, isLoading, user, checkAuth } = useAuthStore();
   const [isChecking, setIsChecking] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
-      // Always wait for the global checkAuth to finish if it's currently running.
-      // But actually, Providers already calls checkAuth. We just check localStorage directly for token.
       const token = localStorage.getItem("token");
       
       if (!token) {
-        router.replace("/login");
+        setIsChecking(false);
+        setIsRedirecting(true);
+        router.replace("/"); // Đẩy về home nếu chưa đăng nhập
         return;
       }
 
       if (!isLoggedIn && !isLoading) {
-        // Fallback in case Providers hasn't finished or failed
         await checkAuth();
       }
       setIsChecking(false);
@@ -39,12 +39,18 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   useEffect(() => {
     if (!isChecking && !isLoading) {
       if (!isLoggedIn) {
-        router.replace("/login");
-      } else if (requireAdmin && user?.role !== "admin") {
+        setIsRedirecting(true);
+        router.replace("/");
+      } else if (requireAdmin && user?.role !== "admin" && user?.role !== "staff") {
+        setIsRedirecting(true);
         router.replace("/");
       }
     }
   }, [isChecking, isLoading, isLoggedIn, requireAdmin, user, router]);
+
+  if (isRedirecting) {
+    return null;
+  }
 
   if (isChecking || isLoading || !isLoggedIn) {
     return (
@@ -55,7 +61,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
     );
   }
 
-  if (requireAdmin && user?.role !== "admin") {
+  if (requireAdmin && user?.role !== "admin" && user?.role !== "staff") {
     return null;
   }
 

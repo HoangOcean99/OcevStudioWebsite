@@ -16,6 +16,8 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import orderRoutes from './routes/orderRoutes';
+import adminRoutes from './routes/adminRoutes';
+import uploadRoutes from './routes/uploadRoutes';
 
 // Parse .env manually from parent directory if needed
 const envPath = path.resolve(__dirname, '../../.env');
@@ -62,6 +64,8 @@ if (process.env.ENABLE_MONGO === 'true' && process.env.MONGO_URI) {
 app.use('/api/users', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/seed', async (req, res) => {
   try {

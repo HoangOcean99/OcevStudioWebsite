@@ -36,30 +36,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
       {/* Background Ambience */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-purple-600/20 via-orange-500/10 to-indigo-600/20 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Back to Store Button */}
       <Link
         href="/"
-        className="absolute top-6 left-6 flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors bg-zinc-900/80 px-4 py-2 rounded-full border border-zinc-800 backdrop-blur-md"
+        className="absolute top-6 left-6 flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors bg-white/80 dark:bg-zinc-900/80 px-4 py-2 rounded-full border border-gray-200 dark:border-zinc-800 backdrop-blur-md"
       >
         <ArrowLeft className="w-4 h-4" /> Về trang chủ
       </Link>
 
       {/* Auth Card */}
-      <div className="relative z-10 w-full max-w-md bg-zinc-900/90 border border-zinc-800 backdrop-blur-xl rounded-3xl p-8 shadow-2xl space-y-6">
+      <div className="relative z-10 w-full max-w-md bg-white/90 dark:bg-zinc-900/90 border border-gray-200 dark:border-zinc-800 backdrop-blur-xl rounded-3xl p-8 shadow-xl dark:shadow-2xl space-y-6">
         
         {/* Header */}
         <div className="text-center space-y-2">
           <Link href="/" className="inline-block">
-            <span className="font-black text-3xl tracking-widest text-white uppercase">
-              OCEV<span className="text-gray-500 font-light">STUDIO</span>
+            <span className="font-black text-3xl tracking-widest text-gray-900 dark:text-white uppercase">
+              OCEV<span className="text-gray-400 dark:text-gray-500 font-light">STUDIO</span>
             </span>
           </Link>
-          <h2 className="text-xl font-bold tracking-tight text-gray-200">Chào mừng trở lại</h2>
-          <p className="text-xs text-gray-400">Đăng nhập để xem tủ đồ và sản phẩm yêu thích của bạn</p>
+          <h2 className="text-xl font-bold tracking-tight text-gray-900 dark:text-gray-200">Chào mừng trở lại</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Đăng nhập để xem tủ đồ và sản phẩm yêu thích của bạn</p>
         </div>
 
         {/* Google Login Button */}
@@ -67,7 +67,7 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
           type="button"
           disabled={isLoading}
-          className="w-full py-3 bg-white text-black font-extrabold rounded-2xl text-xs hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/10"
+          className="w-full py-3 bg-gray-900 text-white dark:bg-white dark:text-black font-extrabold rounded-2xl text-xs hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-gray-900/10 dark:shadow-white/10"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

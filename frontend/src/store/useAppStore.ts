@@ -1,12 +1,21 @@
 import { create } from 'zustand';
 import { OutfitData } from '../components/OutfitCard';
-import { Product } from '../data/productsData';
+import { Product, PRODUCTS_DATA, ItemColor } from '../data/productsData';
 import api from '../lib/api';
 
 export interface CartItem extends OutfitData {
   cartItemId: string; // Unique ID for the cart item
   size: string | null;
   quantity: number;
+  color?: ItemColor;
+  availableColors?: ItemColor[];
+  availableSizes?: string[];
+  isBundle?: boolean;
+  bundleName?: string;
+  cartBundleId?: string;
+  isCustom?: boolean;
+  basePrice?: number;
+  originalItemId?: string;
 }
 
 interface AppState {
@@ -36,7 +45,9 @@ interface AppState {
   addPassedOutfit: (id: string) => void;
   updateCartItemSize: (cartItemId: string, size: string) => void;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => void;
+  updateCartItemColor: (cartItemId: string, color: ItemColor) => void;
   removeFromCart: (cartItemId: string) => void;
+  removeOrDowngradeBundleItem: (cartItemId: string) => void;
   clearCart: () => void;
   toggleCart: () => void;
   toggleAiDrawer: () => void;
@@ -77,16 +88,20 @@ export const useAppStore = create<AppState>((set, get) => ({
         ...p,
         id: p.id || p._id
       }));
-      set({ products: mappedProducts, isLoadingProducts: false });
+      // Fallback to local data if API returns empty
+      const products = mappedProducts.length > 0 ? mappedProducts : PRODUCTS_DATA;
+      set({ products, isLoadingProducts: false });
     } catch (error: any) {
-      set({ 
-        errorProducts: error.response?.data?.message || 'Failed to fetch products',
-        isLoadingProducts: false 
+      console.warn('API unavailable, falling back to local product data.');
+      set({
+        products: PRODUCTS_DATA,
+        errorProducts: null,
+        isLoadingProducts: false
       });
     }
   },
 
-  addToCart: (outfit, size = null) => set((state) => ({ 
+  addToCart: (outfit: any, size = null) => set((state) => ({ 
     cart: [...state.cart, { 
       ...outfit, 
       cartItemId: `${outfit.id}-${size || 'nosize'}-${Date.now()}`, 
@@ -107,9 +122,59 @@ export const useAppStore = create<AppState>((set, get) => ({
     cart: state.cart.map(item => item.cartItemId === cartItemId ? { ...item, quantity } : item)
   })),
   
+  updateCartItemColor: (cartItemId, color) => set((state) => ({
+    cart: state.cart.map(item => {
+      if (item.cartItemId === cartItemId) {
+        // Cập nhật lại tên hiển thị cho đúng màu
+        let newName = item.name;
+        if (newName.includes('(')) {
+          newName = newName.replace(/\(.*?\)/, `(${color.name})`);
+        } else {
+          newName = `${newName} (${color.name})`;
+        }
+        return {
+          ...item,
+          color,
+          imageUrl: color.imageUrl || item.imageUrl,
+          name: newName
+        };
+      }
+      return item;
+    })
+  })),
+
   removeFromCart: (cartItemId) => set((state) => ({
     cart: state.cart.filter(item => item.cartItemId !== cartItemId)
   })),
+
+  removeOrDowngradeBundleItem: (cartItemId) => set((state) => {
+    const itemToRemove = state.cart.find(i => i.cartItemId === cartItemId);
+    if (!itemToRemove) return state;
+
+    let newCart = state.cart.filter(i => i.cartItemId !== cartItemId);
+
+    if (itemToRemove.cartBundleId) {
+      const bundleItems = newCart.filter(i => i.cartBundleId === itemToRemove.cartBundleId);
+      
+      // Nếu là predefined bundle -> xoá món sẽ thành custom bundle (hoặc ngược lại)
+      const remainingCount = bundleItems.length;
+      const discountPercent =
+        remainingCount >= 4 ? 0.2 : remainingCount === 3 ? 0.15 : remainingCount === 2 ? 0.1 : 0;
+
+      newCart = newCart.map(item => {
+        if (item.cartBundleId === itemToRemove.cartBundleId) {
+          return {
+            ...item,
+            isBundle: false,
+            isCustom: true,
+            price: (item.basePrice || item.price) * (1 - discountPercent)
+          };
+        }
+        return item;
+      });
+    }
+    return { cart: newCart };
+  }),
   
   clearCart: () => set({ cart: [] }),
   toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen, isAiDrawerOpen: false })),

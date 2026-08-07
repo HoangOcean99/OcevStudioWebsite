@@ -13,7 +13,7 @@ import api from "@/lib/api";
 
 export default function ProfilePage() {
   const { t } = useTranslation("profile");
-  const { user, setUser } = useAuthStore();
+  const { user } = useAuthStore();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -58,7 +58,7 @@ export default function ProfilePage() {
       };
       
       const response = await api.put("/users/profile", payload);
-      setUser(response.data); 
+      useAuthStore.setState({ user: response.data });
       setSuccessMsg(t("successUpdate"));
       toast.success(t("successUpdate"));
       setTimeout(() => setSuccessMsg(""), 3000);
@@ -77,34 +77,26 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white flex flex-col font-sans">
         <Navbar />
 
-        <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+        <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
           <h1 className="text-3xl font-black uppercase tracking-tight mb-8">
             {t("title")}
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Sidebar Profile Info */}
-            <div className="md:col-span-1 space-y-6">
-              <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-gray-100 dark:border-zinc-800 shadow-xl flex flex-col items-center text-center">
-                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-gray-100 dark:border-zinc-800 mb-4 bg-gray-100 dark:bg-zinc-800">
-                  <Image 
-                    src={user.avatar || "/default-avatar.svg"} 
-                    alt={user.name} 
-                    fill 
-                    sizes="128px"
-                    className="object-cover" 
-                  />
-                </div>
-                <h2 className="text-xl font-bold">{user.name}</h2>
-                <p className="text-sm text-gray-500 mb-4">{user.email}</p>
-                <div className="w-full bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 text-left space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <User className="w-4 h-4 text-gray-400" />
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      Tuổi: {user.age || "N/A"}
-                    </span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* User Info Card */}
+            <div className="md:col-span-1">
+              <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-gray-100 dark:border-zinc-800 shadow-xl">
+                <div className="mb-6 flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0">
+                    <User className="w-8 h-8" />
                   </div>
+                  <div className="min-w-0">
+                    <p className="font-black text-lg truncate">{user.name || "N/A"}</p>
+                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm">
                     <MapPin className="w-4 h-4 text-gray-400" />
                     <span className="font-medium text-gray-700 dark:text-gray-300 truncate">{user.address || "N/A"}</span>

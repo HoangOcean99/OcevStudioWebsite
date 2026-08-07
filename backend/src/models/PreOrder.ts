@@ -8,7 +8,7 @@ export interface IPreOrder extends Document {
     phone: string;
   };
   items: {
-    product: mongoose.Types.ObjectId;
+    product: string;
     size: string;
     quantity: number;
     price: number;
@@ -35,7 +35,7 @@ const PreOrderSchema: Schema = new Schema(
     },
     items: [
       {
-        product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+        product: { type: String, required: true, ref: 'Product' }, // Mongoose requires ref for populate
         size: { type: String, required: true },
         quantity: { type: Number, required: true, default: 1 },
         price: { type: Number, required: true },

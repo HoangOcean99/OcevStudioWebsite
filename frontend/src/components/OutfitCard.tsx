@@ -80,7 +80,7 @@ export default function OutfitCard({ outfit, active, onSwipe, zIndex }: OutfitCa
           <div className="flex justify-between items-end mb-4">
             <div>
               <h2 className="text-3xl font-bold mb-1 shadow-sm">{outfit.name}</h2>
-              <p className="text-lg font-medium opacity-90">${outfit.price}</p>
+              <p className="text-lg font-medium opacity-90">{outfit.price.toLocaleString("vi-VN")} ₫</p>
             </div>
             <button className="p-3 bg-white/20 backdrop-blur-md rounded-full pointer-events-auto hover:bg-white/30 transition-colors">
               <Info className="w-5 h-5 text-white" />

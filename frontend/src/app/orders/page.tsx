@@ -9,6 +9,7 @@ import { Package, Truck, CheckCircle2, Clock, ClipboardCheck, Check } from "luci
 import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import api from "@/lib/api";
+import { PRODUCTS_DATA } from "@/data/productsData";
 
 const getProgressStyle = (status: string) => {
   switch (status) {
@@ -37,6 +38,29 @@ const getStepClass = (state: string, currentColorClass: string) => {
   return 'bg-white border-2 border-gray-200 dark:bg-zinc-900 dark:border-zinc-700 text-gray-400';
 };
 
+const getProductName = (product: any) => {
+  if (product && typeof product === 'object') return product.name || 'Unknown Product';
+  if (typeof product === 'string') {
+    return product.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+  return 'Unknown Product';
+};
+
+const getProductImage = (product: any) => {
+  if (product && typeof product === 'object' && product.imageUrl) return product.imageUrl;
+  if (typeof product === 'string') {
+    const p = PRODUCTS_DATA.find((x) => x.id === product);
+    if (p) return p.imageUrl;
+    for (const mainProd of PRODUCTS_DATA) {
+      if (mainProd.bundleItems) {
+        const b = mainProd.bundleItems.find((x) => x.id === product);
+        if (b) return b.imageUrl;
+      }
+    }
+  }
+  return null;
+};
+
 export default function OrdersPage() {
   const { t } = useTranslation("orders");
   const { user } = useAuthStore();
@@ -59,8 +83,6 @@ export default function OrdersPage() {
       fetchOrders();
     }
   }, [user]);
-
-  if (!user) return null;
 
   return (
     <ProtectedRoute>
@@ -95,7 +117,7 @@ export default function OrdersPage() {
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 font-bold uppercase tracking-widest text-right">Total</p>
-                      <p className="font-black text-lg text-right">${order.totalAmount.toFixed(2)}</p>
+                      <p className="font-black text-lg text-right">{order.totalAmount.toLocaleString("vi-VN")} ₫</p>
                     </div>
                   </div>
 
@@ -104,18 +126,18 @@ export default function OrdersPage() {
                     {order.items.map((item: any, idx: number) => (
                       <div key={idx} className="flex items-center gap-4">
                         <div className="relative w-16 h-20 rounded-xl overflow-hidden bg-gray-100 dark:bg-zinc-800 flex-shrink-0">
-                          {item.product?.imageUrl ? (
-                            <Image src={item.product.imageUrl} alt={item.product.name} fill className="object-cover" />
+                          {getProductImage(item.product) ? (
+                            <Image src={getProductImage(item.product) as string} alt={getProductName(item.product)} fill className="object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
+                            <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 text-center leading-tight px-1">No Image</div>
                           )}
                         </div>
                         <div className="flex-1">
-                          <p className="font-bold text-sm line-clamp-1">{item.product?.name || 'Unknown Product'}</p>
+                          <p className="font-bold text-sm line-clamp-1">{getProductName(item.product)}</p>
                           <p className="text-xs text-gray-500">Size: {item.size} | Qty: {item.quantity}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-sm">${item.price.toFixed(2)}</p>
+                          <p className="font-bold text-sm">{item.price.toLocaleString("vi-VN")} ₫</p>
                         </div>
                       </div>
                     ))}
