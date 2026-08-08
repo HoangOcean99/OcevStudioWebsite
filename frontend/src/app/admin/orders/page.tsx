@@ -38,7 +38,7 @@ const formatDate = (value: string) => {
 const getItemName = (item: any) => {
   if (typeof item.product === "object" && item.product && item.product.name) return item.product.name;
   if (typeof item.product === "string") {
-    return item.product.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    return item.product.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
   return "Sản phẩm";
 };
