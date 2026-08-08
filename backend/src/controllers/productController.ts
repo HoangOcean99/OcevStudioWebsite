@@ -12,7 +12,7 @@ class ProductController extends BaseController<IProduct> {
   }
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const productId = req.params.id;
+    const productId = req.params.id as string;
     try {
       await this.service.delete(productId);
       

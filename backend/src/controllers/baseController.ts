@@ -19,7 +19,7 @@ export class BaseController<T extends Document> {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const item = await this.service.findById(req.params.id);
+    const item = await this.service.findById(req.params.id as string);
     if (item) {
       res.json(item);
     } else {
@@ -35,7 +35,7 @@ export class BaseController<T extends Document> {
 
   update = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const updatedItem = await this.service.update(req.params.id, req.body);
+      const updatedItem = await this.service.update(req.params.id as string, req.body);
       res.json(updatedItem);
     } catch (error: any) {
       if (error.message === 'Item not found') {
@@ -48,7 +48,7 @@ export class BaseController<T extends Document> {
 
   delete = asyncHandler(async (req: Request, res: Response) => {
     try {
-      await this.service.delete(req.params.id);
+      await this.service.delete(req.params.id as string);
       res.json({ message: 'Removed successfully' });
     } catch (error: any) {
       if (error.message === 'Item not found') {

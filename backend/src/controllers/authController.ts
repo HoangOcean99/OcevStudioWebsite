@@ -26,7 +26,7 @@ export const googleLogin = asyncHandler(async (req: Request, res: Response) => {
       shirtSize: user.shirtSize,
       pantsSize: user.pantsSize,
       shoeSize: user.shoeSize,
-      token: authService.generateToken(user._id as string, user.role),
+      token: authService.generateToken(user._id.toString(), user.role),
     });
   } catch (error: any) {
     if (error.message === 'Invalid Google token') {
@@ -76,7 +76,7 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
       shirtSize: updatedUser.shirtSize,
       pantsSize: updatedUser.pantsSize,
       shoeSize: updatedUser.shoeSize,
-      token: authService.generateToken(updatedUser._id as string, updatedUser.role),
+      token: authService.generateToken(updatedUser._id.toString(), updatedUser.role),
     });
   } else {
     res.status(404);
