@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject, ZodError } from 'zod';
+import { ZodSchema, ZodError } from 'zod';
 
-export const validate = (schema: AnyZodObject) => {
+export const validate = (schema: ZodSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
@@ -14,7 +14,7 @@ export const validate = (schema: AnyZodObject) => {
       if (error instanceof ZodError) {
         res.status(400);
         // Pass a formatted string or the first error message to the global handler
-        const errorsList = error.errors || error.issues || [];
+        const errorsList = error.issues || [];
         next(new Error(`Validation failed: ${errorsList.map((e: any) => e.message).join(', ')}`));
       } else {
         next(error);

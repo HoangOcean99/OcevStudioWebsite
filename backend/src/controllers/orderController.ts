@@ -52,10 +52,10 @@ class OrderController extends BaseController<IPreOrder> {
 
   // Override getById to check authorization
   getById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const order = await this.orderService.findById(req.params.id);
+    const order = await this.orderService.findById(req.params.id as string);
 
     if (order) {
-      if ((req as any).user.role === 'admin' || order.user.toString() === (req as any).user.id) {
+      if ((req as any).user.role === 'admin' || (order.user && order.user.toString() === (req as any).user.id)) {
         res.json(order);
       } else {
         res.status(403);
@@ -75,11 +75,7 @@ class OrderController extends BaseController<IPreOrder> {
     if (paymentStatus) updateFields.paymentStatus = paymentStatus;
     if (vietQrTransactionId) updateFields.vietQrTransactionId = vietQrTransactionId;
 
-    const updatedOrder = await this.orderService.model.findByIdAndUpdate(
-      req.params.id,
-      { $set: updateFields },
-      { new: true }
-    );
+    const updatedOrder = await this.orderService.update(req.params.id as string, updateFields);
 
     if (updatedOrder) {
       res.json(updatedOrder);

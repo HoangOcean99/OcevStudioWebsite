@@ -23,7 +23,7 @@ router.get('/stats', asyncHandler(async (req, res) => {
       ])
     ]);
 
-    let recentOrders = [];
+    let recentOrders: any[] = [];
     try {
       recentOrders = await PreOrder.find()
         .sort({ createdAt: -1 })
@@ -35,7 +35,7 @@ router.get('/stats', asyncHandler(async (req, res) => {
         if (order.user && typeof order.user.toString === 'function' && order.user.toString().match(/^[0-9a-fA-F]{24}$/)) {
           const userObj = await User.findById(order.user).select('name email avatar').lean();
           if (userObj) {
-            order.user = userObj;
+            order.user = userObj as any;
           }
         }
 
@@ -45,7 +45,7 @@ router.get('/stats', asyncHandler(async (req, res) => {
             if (item.product && typeof item.product.toString === 'function' && item.product.toString().match(/^[0-9a-fA-F]{24}$/)) {
               const prod = await Product.findById(item.product).lean();
               if (prod) {
-                item.product = prod;
+                item.product = prod as any;
               }
             }
           }
@@ -213,7 +213,6 @@ router.post('/users', asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    password, // Cần mã hóa ở thực tế, nhưng hiện mô phỏng
     role: role || 'user',
     phone,
     address,
