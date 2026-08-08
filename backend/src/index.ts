@@ -116,15 +116,15 @@ app.get('/api/seed', async (req, res) => {
   }
 });
 
-app.use(notFound);
-app.use(errorHandler);
-
 const port = process.env.PORT || 8000;
 const serviceName = 'OcevStudio Monolith Server';
 
 app.get('/', (req, res) => {
   res.send(`${serviceName} is running`);
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`🚀 ${serviceName} running at http://localhost:${port}`);
