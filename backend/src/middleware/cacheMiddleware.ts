@@ -12,7 +12,7 @@ export const cache = (durationSeconds: number) => {
       return next(); // Fail gracefully if Redis is down
     }
 
-    const key = `cache:${req.originalUrl}`;
+    const key = `ocevstudio:cache:${req.originalUrl}`;
 
     try {
       const cachedResponse = await redis.get(key);
@@ -43,7 +43,7 @@ export const clearCache = (prefix: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (redis.status === 'ready') {
-        const keys = await redis.keys(`cache:${prefix}*`);
+        const keys = await redis.keys(`ocevstudio:cache:${prefix}*`);
         if (keys.length > 0) {
           await redis.del(...keys);
         }
