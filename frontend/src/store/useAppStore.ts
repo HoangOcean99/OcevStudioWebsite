@@ -32,7 +32,7 @@ interface AppState {
   selectedCategory: string;
   searchQuery: string;
   sortBy: 'featured' | 'price-low' | 'price-high' | 'newest';
-  viewMode: 'grid-4' | 'grid-3' | 'grid-2';
+  viewMode: 'grid-4' | 'grid-3' | 'grid-2' | 'lookbook';
 
   // API State
   products: Product[];
@@ -41,7 +41,7 @@ interface AppState {
 
   // Actions
   fetchProducts: () => Promise<void>;
-  addToCart: (outfit: OutfitData, size?: string | null) => void;
+  addToCart: (outfit: any, size?: string | null) => void;
   addPassedOutfit: (id: string) => void;
   updateCartItemSize: (cartItemId: string, size: string) => void;
   updateCartItemQuantity: (cartItemId: string, quantity: number) => void;
@@ -59,7 +59,7 @@ interface AppState {
   setSelectedCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sort: 'featured' | 'price-low' | 'price-high' | 'newest') => void;
-  setViewMode: (mode: 'grid-4' | 'grid-3' | 'grid-2') => void;
+  setViewMode: (mode: 'grid-4' | 'grid-3' | 'grid-2' | 'lookbook') => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({

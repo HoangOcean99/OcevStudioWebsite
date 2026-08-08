@@ -25,13 +25,14 @@ export default function Navbar() {
 
   const totalCartItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const navLinks = [
+  const navLinks: { name: string; href: string; icon?: React.ReactNode; badge?: string }[] = [
     { name: t("home"), href: "/" },
     { name: t("shopStore"), href: "/shop" },
     {
       name: t("studio") || "Phòng Thử Đồ",
       href: "/studio",
-      icon: <Scissors className="w-4 h-4 text-purple-500" />
+      icon: <Scissors className="w-4 h-4 text-purple-500" />,
+      badge: "NEW"
     },
   ];
 

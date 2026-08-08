@@ -29,7 +29,7 @@ export default function MixMatchStudioPage() {
   const [aiResult, setAiResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const filteredProducts = products.filter(p => p.category === activeTab);
+  const filteredProducts = products.filter(p => (p.category as string) === activeTab);
 
   const getSelectedProductForTab = (category: Category) => {
     switch (category) {
@@ -42,7 +42,7 @@ export default function MixMatchStudioPage() {
   };
 
   const handleSelectProduct = (product: Product) => {
-    switch (product.category) {
+    switch (product.category as string) {
       case "outerwear":
       case "sets":
         setSelectedOuterwear(product);

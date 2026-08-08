@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
-import UserFormModal, { AdminUser } from "@/components/admin/UserFormModal";
+import UserFormModal from "@/components/admin/UserFormModal";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
 interface AdminUser {

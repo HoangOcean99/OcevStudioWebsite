@@ -186,7 +186,7 @@ export default function AdminDashboardPage() {
                   <Tooltip 
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                     itemStyle={{ fontWeight: 'bold' }}
-                    formatter={(value: number) => formatCurrency(value)}
+                    formatter={(value: any) => formatCurrency(Number(value) || 0)}
                   />
                   <Legend iconType="circle" />
                   <Bar dataKey="TiềnVào" name="Doanh Thu" fill="#10b981" radius={[4, 4, 0, 0]} />

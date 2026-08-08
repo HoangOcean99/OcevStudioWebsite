@@ -7,14 +7,14 @@ import CartDrawer from "@/components/CartDrawer";
 import ProductQuickViewModal from "@/components/ProductQuickViewModal";
 import ProductCard from "@/components/ProductCard";
 import ShopHero from "@/components/ShopHero";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { Search, SlidersHorizontal, Grid2X2, Grid3X3, LayoutGrid, Heart, Flame, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
 import LookbookView from "@/components/LookbookView";
 
-export default function ShopPage() {
+function ShopContent() {
   const searchParams = useSearchParams();
   const filterParam = searchParams.get("filter");
 
@@ -222,5 +222,13 @@ export default function ShopPage() {
       <CartDrawer />
       <ProductQuickViewModal />
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ShopContent />
+    </Suspense>
   );
 }

@@ -61,7 +61,7 @@ export default function AIChatInterface() {
         recommendedProducts = products.filter(p => ["prod-8", "prod-3"].includes(p.id));
         aiText = "For winter streetwear, layered warmth is key. The Tech-Fleece Bomber or Matrix Leather Jacket are perfect statement pieces.";
       } else {
-        recommendedProducts = products.filter(p => p.category === "sets" || p.category === "tops").slice(0, 2);
+        recommendedProducts = products.filter(p => (p.category as string) === "sets" || (p.category as string) === "tops").slice(0, 2);
         aiText = "I've curated these minimalist and edgy pieces to match your vibe. They offer a versatile, futuristic look.";
       }
 

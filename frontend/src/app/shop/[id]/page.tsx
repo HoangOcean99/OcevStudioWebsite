@@ -219,7 +219,7 @@ export default function ProductDetailPage({
     product?.bundleItems?.reduce((sum, item) => sum + (item.price || 0), 0) || 0;
   const isCombo = !!product?.bundleItems && product.bundleItems.length > 0;
   const safePrice =
-    product?.price > 0 ? product.price : isCombo ? bundleItemsTotal * 0.8 : 0;
+    (product?.price ?? 0) > 0 ? product!.price : isCombo ? bundleItemsTotal * 0.8 : 0;
 
   const selectedCustomItemsData =
     product?.bundleItems?.filter((i) => selectedCustomItems.includes(i.id)) || [];
@@ -608,7 +608,7 @@ export default function ProductDetailPage({
                     ) : (
                       <ShoppingBag className="w-5 h-5" />
                     )}
-                    {addedBundleSuccess ? t("added") : t("addCompleteSet")}
+                    {addedBundleSuccess ? "Đã Thêm Vào Giỏ" : "Thêm Cả Bộ Vào Giỏ"}
                   </button>
                 </div>
               </div>
