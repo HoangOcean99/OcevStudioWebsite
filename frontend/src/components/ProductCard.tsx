@@ -108,7 +108,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div>
           {/* Category */}
           <div className="text-[10px] text-gray-400 mb-1.5 uppercase tracking-widest font-semibold">
-            {product.category === 'streetwear' || product.category === 'techwear' ? 'đồ nam' : product.category === 'cyberpunk' ? 'đồ nữ' : product.category === 'minimalist' ? 'đồ đôi' : product.category}
+            {(product.category as string) === 'streetwear' || (product.category as string) === 'techwear' ? 'đồ nam' : (product.category as string) === 'cyberpunk' ? 'đồ nữ' : (product.category as string) === 'minimalist' ? 'đồ đôi' : product.category}
           </div>
 
           <div className="flex justify-between items-start gap-2">
