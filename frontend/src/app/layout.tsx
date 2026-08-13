@@ -21,6 +21,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "OcevStudio | High-End Fashion",
   description: "Khám phá phong cách thời trang đỉnh cao cùng OcevStudio.",
+  icons: {
+    icon: '/MainLogo.png',
+  },
 };
 
 export default function RootLayout({
