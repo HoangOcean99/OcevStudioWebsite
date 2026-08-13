@@ -82,17 +82,17 @@ export default function LandingPage() {
           {[
             {
               title: "Đồ Nam",
-              img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600&auto=format&fit=crop",
+              img: "/donam.jpg",
               cat: "đồ nam",
             },
             {
               title: "Đồ Nữ",
-              img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop",
+              img: "/donu.jpg",
               cat: "đồ nữ",
             },
             {
               title: "Đồ Đôi",
-              img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
+              img: "/dodoi.jpg",
               cat: "đồ đôi",
             },
           ].map((item, idx) => (

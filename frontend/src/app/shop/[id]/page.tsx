@@ -388,7 +388,7 @@ export default function ProductDetailPage({
           <div className="flex flex-col">
             {/* Category & Rating */}
             <div className="flex justify-between items-center text-xs text-gray-400 mb-2 uppercase tracking-wider font-semibold">
-              <span>{product.category}</span>
+              <span>{product.category === 'streetwear' || product.category === 'techwear' ? 'đồ nam' : product.category === 'cyberpunk' ? 'đồ nữ' : product.category === 'minimalist' ? 'đồ đôi' : product.category}</span>
               <div className="flex items-center gap-1 text-amber-500">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                 <span className="text-gray-700 dark:text-gray-300 font-bold">

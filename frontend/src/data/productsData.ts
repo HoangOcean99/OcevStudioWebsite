@@ -40,7 +40,7 @@ export interface BundleColorTheme {
 export interface Product {
   id: string;
   name: string;
-  category: 'streetwear' | 'cyberpunk' | 'minimalist' | 'techwear';
+  category: 'đồ nam' | 'đồ nữ' | 'đồ đôi';
   price: number;
   originalPrice?: number;
   imageUrl: string;
@@ -66,7 +66,7 @@ export const PRODUCTS_DATA: Product[] = [
   {
     id: "urban-ninja-complete-set",
     name: "Urban Ninja Complete Set",
-    category: "techwear",
+    category: "đồ nam",
     price: 219.00,
     originalPrice: 303.00,
     imageUrl:
@@ -334,7 +334,7 @@ export const PRODUCTS_DATA: Product[] = [
   {
     id: "sculpted-monolith-set",
     name: "Sculpted Monolith Set",
-    category: "minimalist",
+    category: "đồ đôi",
     price: 230.00,
     originalPrice: 284.00,
     imageUrl:
@@ -504,7 +504,7 @@ export const PRODUCTS_DATA: Product[] = [
   {
     id: "cyber-recon-outfit",
     name: "Cyber Recon Outfit",
-    category: "cyberpunk",
+    category: "đồ nữ",
     price: 198.00,
     originalPrice: 262.00,
     imageUrl:

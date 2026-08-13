@@ -107,7 +107,7 @@ export default function ProductQuickViewModal() {
                 {/* Category & Badge */}
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
-                    {quickViewProduct.category}
+                    {quickViewProduct.category === 'streetwear' || quickViewProduct.category === 'techwear' ? 'đồ nam' : quickViewProduct.category === 'cyberpunk' ? 'đồ nữ' : quickViewProduct.category === 'minimalist' ? 'đồ đôi' : quickViewProduct.category}
                   </span>
                   {quickViewProduct.badge && (
                     <span className="px-2.5 py-0.5 text-[10px] font-black bg-black text-white dark:bg-white dark:text-black rounded-full uppercase">
