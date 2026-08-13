@@ -14,6 +14,7 @@ export interface IProduct extends Document {
   reviewsCount?: number;
   isAvailable?: boolean;
   stock?: number;
+  sourceLink?: string;
   bundleItems?: any[];
   colorThemes?: any[];
   sizes: string[];
@@ -36,6 +37,7 @@ const ProductSchema: Schema = new Schema(
     reviewsCount: { type: Number, default: 0 },
     isAvailable: { type: Boolean, default: true },
     stock: { type: Number, default: 0 },
+    sourceLink: { type: String },
     bundleItems: [{ type: Schema.Types.Mixed }],
     colorThemes: [{ type: Schema.Types.Mixed }],
     sizes: [{ type: String }],

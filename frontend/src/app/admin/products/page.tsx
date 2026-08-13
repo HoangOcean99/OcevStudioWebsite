@@ -1,6 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
-import { Plus, Search, Filter, Edit, Trash2, X, Loader2 } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { Plus, Search, Filter, Edit, Trash2, X, Loader2, ChevronDown, ChevronUp, Link as LinkIcon } from "lucide-react";
 import Image from "next/image";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -18,6 +18,11 @@ export default function AdminProductsPage() {
   const [editing, setEditing] = useState<AdminProduct | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [productToDelete, setProductToDelete] = useState<AdminProduct | null>(null);
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  const toggleRow = (id: string) => {
+    setExpandedRows(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["products"],
@@ -146,9 +151,13 @@ export default function AdminProductsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-zinc-800 text-xs">
                   {filtered.map((product) => (
-                    <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
+                    <React.Fragment key={product._id}>
+                    <tr className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
+                          <button onClick={() => toggleRow(product._id as string)} className="text-gray-400 hover:text-black dark:hover:text-white">
+                            {expandedRows[product._id as string] ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
+                          </button>
                           <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
                             {product.imageUrl ? (
                               <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
@@ -202,6 +211,43 @@ export default function AdminProductsPage() {
                         </div>
                       </td>
                     </tr>
+                    {expandedRows[product._id as string] && (
+                      <tr className="bg-gray-50/50 dark:bg-zinc-900/50 border-b border-gray-100 dark:border-zinc-800">
+                        <td colSpan={6} className="px-14 py-4">
+                          <div className="space-y-3">
+                            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Link mua sản phẩm gốc</h4>
+                            {product.bundleItems && product.bundleItems.length > 0 ? (
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                {product.bundleItems.map((item: any) => (
+                                  <div key={item.id} className="flex flex-col gap-1 p-3 bg-white dark:bg-zinc-950 rounded-xl border border-gray-100 dark:border-zinc-800">
+                                    <span className="text-xs font-bold text-gray-900 dark:text-white">{item.name}</span>
+                                    {item.sourceLink ? (
+                                      <a href={item.sourceLink} target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-500 hover:underline flex items-center gap-1">
+                                        <LinkIcon className="w-3 h-3" /> {item.sourceLink}
+                                      </a>
+                                    ) : (
+                                      <span className="text-[11px] text-gray-400 italic">Chưa có link</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="flex flex-col gap-1 p-3 bg-white dark:bg-zinc-950 rounded-xl border border-gray-100 dark:border-zinc-800 w-fit min-w-[250px]">
+                                <span className="text-xs font-bold text-gray-900 dark:text-white">{product.name}</span>
+                                {product.sourceLink ? (
+                                  <a href={product.sourceLink} target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-500 hover:underline flex items-center gap-1">
+                                    <LinkIcon className="w-3 h-3" /> {product.sourceLink}
+                                  </a>
+                                ) : (
+                                  <span className="text-[11px] text-gray-400 italic">Chưa có link</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                    </React.Fragment>
                   ))}
                   {filtered.length === 0 && (
                     <tr>

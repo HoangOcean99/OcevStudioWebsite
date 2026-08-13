@@ -18,6 +18,7 @@ export interface AdminProduct {
   description?: string;
   badge?: string;
   sizes?: string[];
+  sourceLink?: string;
   isAvailable?: boolean;
   bundleItems?: any[];
   colorThemes?: any[];
@@ -58,6 +59,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
     imageUrl: "",
     description: "",
     sizes: "",
+    sourceLink: "",
     badge: "",
     isAvailable: true,
   });
@@ -77,6 +79,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
         imageUrl: initial?.imageUrl || "",
         description: initial?.description || "",
         sizes: (initial?.sizes || []).join(", "),
+        sourceLink: initial?.sourceLink || "",
         badge: initial?.badge || "",
         isAvailable: initial?.isAvailable !== false,
       });
@@ -131,6 +134,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean),
+      sourceLink: form.sourceLink.trim() || undefined,
       badge: form.badge || undefined,
       isAvailable: form.isAvailable,
     };
@@ -227,6 +231,13 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                   <div>
                     <label className={labelClass}>Size (phân cách dấu phẩy)</label>
                     <input name="sizes" value={form.sizes} onChange={handleChange} placeholder="S, M, L, XL" className={inputClass} />
+                  </div>
+                )}
+
+                {!advancedMode && (
+                  <div className="sm:col-span-2">
+                    <label className={labelClass}>Link gốc sản phẩm (Nguồn mua)</label>
+                    <input name="sourceLink" value={form.sourceLink} onChange={handleChange} placeholder="https://..." className={inputClass} />
                   </div>
                 )}
 
@@ -393,7 +404,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
               <div className="lg:pl-6 lg:border-l border-gray-100 dark:border-zinc-800">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-bold flex items-center gap-2"><Package className="w-4 h-4"/> Các Món Đồ (Bundle Items)</h3>
-                  <button type="button" onClick={() => setBundleItems([...bundleItems, { id: "", name: "", type: "top", price: 0, imageUrl: "", sizes: [], presetColor: { name: "", hex: "#000000" } }])} className="text-xs font-bold bg-black text-white dark:bg-white dark:text-black px-3 py-1.5 rounded-lg flex items-center gap-1 hover:scale-105 transition-transform"><Plus className="w-3 h-3"/> Thêm Món Đồ</button>
+                  <button type="button" onClick={() => setBundleItems([...bundleItems, { id: "", name: "", type: "top", price: 0, imageUrl: "", sizes: [], sourceLink: "", presetColor: { name: "", hex: "#000000" } }])} className="text-xs font-bold bg-black text-white dark:bg-white dark:text-black px-3 py-1.5 rounded-lg flex items-center gap-1 hover:scale-105 transition-transform"><Plus className="w-3 h-3"/> Thêm Món Đồ</button>
                 </div>
                 
                 <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-2 custom-scrollbar">
@@ -423,6 +434,10 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                         <div>
                           <label className={labelClass}>Giá (VNĐ)</label>
                           <input type="number" value={item.price} onChange={e => { const newItems = [...bundleItems]; newItems[index].price = Number(e.target.value); setBundleItems(newItems); }} className={inputClass} />
+                        </div>
+                        <div className="col-span-2">
+                          <label className={labelClass}>Link gốc sản phẩm (Nguồn mua)</label>
+                          <input type="text" value={item.sourceLink || ""} onChange={e => { const newItems = [...bundleItems]; newItems[index].sourceLink = e.target.value; setBundleItems(newItems); }} placeholder="https://..." className={inputClass} />
                         </div>
                         <div className="col-span-2">
                           <ImageUploader 
