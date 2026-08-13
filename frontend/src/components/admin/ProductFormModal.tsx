@@ -136,7 +136,14 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
     };
 
     if (advancedMode) {
-      payload.bundleItems = bundleItems;
+      payload.bundleItems = bundleItems.map(item => ({
+        ...item,
+        sizes: Array.isArray(item.sizes) 
+          ? item.sizes 
+          : typeof item.sizes === 'string'
+            ? item.sizes.split(",").map((s: string) => s.trim()).filter(Boolean)
+            : []
+      }));
       payload.colorThemes = colorThemes;
     }
 
@@ -216,10 +223,12 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                   <input type="number" min="0" name="stock" value={form.stock} onChange={handleChange} placeholder="50" className={inputClass} />
                 </div>
 
-                <div>
-                  <label className={labelClass}>Size (phân cách dấu phẩy)</label>
-                  <input name="sizes" value={form.sizes} onChange={handleChange} placeholder="S, M, L, XL" className={inputClass} />
-                </div>
+                {!advancedMode && (
+                  <div>
+                    <label className={labelClass}>Size (phân cách dấu phẩy)</label>
+                    <input name="sizes" value={form.sizes} onChange={handleChange} placeholder="S, M, L, XL" className={inputClass} />
+                  </div>
+                )}
 
                 {!advancedMode && (
                   <div className="sm:col-span-2">
@@ -456,7 +465,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                         </div>
                         <div className="col-span-2">
                           <label className={labelClass}>Sizes (phân cách bằng dấu phẩy)</label>
-                          <input value={item.sizes?.join(", ")} onChange={e => { const newItems = [...bundleItems]; newItems[index].sizes = e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean); setBundleItems(newItems); }} className={inputClass} />
+                          <input value={Array.isArray(item.sizes) ? item.sizes.join(", ") : item.sizes || ""} onChange={e => { const newItems = [...bundleItems]; newItems[index].sizes = e.target.value; setBundleItems(newItems); }} className={inputClass} />
                         </div>
                         <div>
                           <label className={labelClass}>Tên Màu Mặc định</label>

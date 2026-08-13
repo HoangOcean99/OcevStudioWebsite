@@ -117,7 +117,7 @@ const ColorPicker = ({
   <div>
     <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
       <Palette className="w-3 h-3" />
-      M\u00e0u s\u1eafc
+      Màu sắc
       <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 normal-case font-semibold text-[10px]">
         {selected.name}
       </span>
@@ -219,7 +219,7 @@ export default function ProductDetailPage({
     product?.bundleItems?.reduce((sum, item) => sum + (item.price || 0), 0) || 0;
   const isCombo = !!product?.bundleItems && product.bundleItems.length > 0;
   const safePrice =
-    (product?.price ?? 0) > 0 ? product!.price : isCombo ? bundleItemsTotal * 0.8 : 0;
+    (product?.price ?? 0) > 0 ? product!.price : isCombo ? bundleItemsTotal * 0.9 : 0;
 
   const selectedCustomItemsData =
     product?.bundleItems?.filter((i) => selectedCustomItems.includes(i.id)) || [];
@@ -230,11 +230,11 @@ export default function ProductDetailPage({
   const customItemsCount = selectedCustomItems.length;
   const customDiscountPercent =
     customItemsCount >= 4
-      ? 0.2
-      : customItemsCount === 3
-      ? 0.15
-      : customItemsCount === 2
       ? 0.1
+      : customItemsCount === 3
+      ? 0.075
+      : customItemsCount === 2
+      ? 0.05
       : 0;
   const customDiscountAmount = customItemsBaseTotal * customDiscountPercent;
   const customFinalTotal = customItemsBaseTotal - customDiscountAmount;
@@ -420,7 +420,7 @@ export default function ProductDetailPage({
               )}
             </div>
 
-            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6 whitespace-pre-line">
               {product.description}
             </p>
 
@@ -446,7 +446,7 @@ export default function ProductDetailPage({
                     <div className="mb-5">
                       <p className="text-[11px] font-black text-orange-800 dark:text-orange-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                         <Palette className="w-3.5 h-3.5" />
-                        Tone m\u00e0u b\u1ed9
+                        Tone màu bộ
                       </p>
                       <div className="grid grid-cols-3 gap-2">
                         {product.colorThemes.map((theme) => {
@@ -500,7 +500,7 @@ export default function ProductDetailPage({
                       <span className="w-4 h-4 rounded-full bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center">
                         <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                       </span>
-                      M\u00e0u & K\u00edch th\u01b0\u1edbc t\u1eebng m\u00f3n
+                      Màu & Kích thước từng món
                     </p>
                     {product.bundleItems?.map((item) => {
                       const itemSizes = item.hasSize === false
@@ -698,7 +698,7 @@ export default function ProductDetailPage({
                   </p>
                 )}
                 <p className="text-indigo-600 dark:text-indigo-400 max-w-2xl text-[11px] font-bold italic">
-                  * Chọn càng nhiều món, giảm giá càng sâu (lên đến 20%)!
+                  * Chọn càng nhiều món, giảm giá càng sâu (lên đến 10%)!
                 </p>
               </div>
 
