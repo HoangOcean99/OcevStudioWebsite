@@ -30,7 +30,7 @@ interface ProductFormModalProps {
   onClose: () => void;
 }
 
-const CATEGORIES = ["streetwear", "cyberpunk", "minimalist", "techwear"];
+const CATEGORIES = ["đồ nam", "đồ nữ", "đồ đôi"];
 const BADGES = ["NEW", "HOT", "SALE", "LIMITED", "BESTSELLER"];
 
 const inputClass =
@@ -52,7 +52,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
   const [form, setForm] = useState({
     _id: "",
     name: "",
-    category: "streetwear",
+    category: "đồ nam",
     price: "",
     originalPrice: "",
     stock: "",
@@ -72,7 +72,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
       setForm({
         _id: initial?._id || generateObjectId(),
         name: initial?.name || "",
-        category: initial?.category || "streetwear",
+        category: initial?.category || "đồ nam",
         price: initial?.price != null ? String(initial.price) : "",
         originalPrice: initial?.originalPrice != null ? String(initial.originalPrice) : "",
         stock: initial?.stock != null ? String(initial.stock) : "",

@@ -35,10 +35,9 @@ function ShopContent() {
 
   const categories = [
     { id: "all", label: t("all") },
-    { id: "streetwear", label: t("catStreetwear") },
-    { id: "cyberpunk", label: t("catCyberpunk") },
-    { id: "minimalist", label: t("catMinimalist") },
-    { id: "techwear", label: t("catTechwear") },
+    { id: "đồ nam", label: t("catMenswear") },
+    { id: "đồ nữ", label: t("catWomenswear") },
+    { id: "đồ đôi", label: t("catCoupleswear") },
     { id: "wishlist", label: `${t("wishlist")} (${wishlist.length})`, isWishlist: true },
   ];
 
@@ -191,7 +190,7 @@ function ShopContent() {
           viewMode === "lookbook" ? (
              <LookbookView outfit={filteredProducts.find(p => p.bundleItems && p.bundleItems.length > 0) || filteredProducts[0]} />
           ) : (
-            <div className={`grid ${gridClass} gap-4 sm:gap-6`}>
+            <div className={`grid ${gridClass} gap-4 sm:gap-6`} >
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

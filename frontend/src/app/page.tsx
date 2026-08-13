@@ -78,27 +78,22 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
-              title: "Streetwear",
+              title: "Đồ Nam",
               img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600&auto=format&fit=crop",
-              cat: "streetwear",
+              cat: "đồ nam",
             },
             {
-              title: "Cyberpunk",
+              title: "Đồ Nữ",
               img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop",
-              cat: "cyberpunk",
+              cat: "đồ nữ",
             },
             {
-              title: "Minimalist",
+              title: "Đồ Đôi",
               img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
-              cat: "minimalist",
-            },
-            {
-              title: "Techwear",
-              img: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=600&auto=format&fit=crop",
-              cat: "techwear",
+              cat: "đồ đôi",
             },
           ].map((item, idx) => (
             <Link

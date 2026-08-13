@@ -8,7 +8,7 @@ import api from "@/lib/api";
 import ProductFormModal, { AdminProduct } from "@/components/admin/ProductFormModal";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
-const CATEGORIES = ["streetwear", "cyberpunk", "minimalist", "techwear"];
+const CATEGORIES = ["đồ nam", "đồ nữ", "đồ đôi"];
 
 export default function AdminProductsPage() {
   const queryClient = useQueryClient();
