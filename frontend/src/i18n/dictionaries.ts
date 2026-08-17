@@ -109,6 +109,7 @@ export const dictionaries = {
       selectSizeHeader: "Chọn Kích Thước",
       selectToCombo: "Chọn Vào Combo",
       selectedToCombo: "Đã Chọn Vào Combo",
+      noReviewsShort: "Chưa có đánh giá",
     },
     reviews: {
       title: "Đánh giá sản phẩm",
@@ -341,7 +342,8 @@ export const dictionaries = {
       addSelectedItems: "Add {count} Selected Items",
       selectSizeHeader: "Select Size",
       selectToCombo: "Select to Combo",
-      selectedToCombo: "Selected in Combo",
+      selectedToCombo: "Selected to Combo",
+      noReviewsShort: "No reviews",
     },
     reviews: {
       title: "Product Reviews",
