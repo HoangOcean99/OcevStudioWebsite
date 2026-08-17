@@ -22,6 +22,7 @@ export interface BundleItem {
   presetColor: ItemColor;
   /** Màu có thể chọn khi mua lẻ */
   availableColors?: ItemColor[];
+  sizeChartUrl?: string;
 }
 
 // ── Bundle Color Theme ────────────────────────────────────────────────────────
@@ -56,6 +57,7 @@ export interface Product {
   bundleItems?: BundleItem[];
   /** Các tone màu phối sẵn cho cả bộ */
   colorThemes?: BundleColorTheme[];
+  sizeChartUrl?: string;
 }
 
 // ── Sample data ───────────────────────────────────────────────────────────────
@@ -80,6 +82,7 @@ export const PRODUCTS_DATA: Product[] = [
     rating: 4.9,
     reviewsCount: 64,
     isAvailable: true,
+    sizeChartUrl: "https://placehold.co/600x800/eeeeee/999999?text=Size+Chart+Mock",
     colorThemes: [
       {
         name: "Stealth Black",
@@ -148,6 +151,7 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1000&auto=format&fit=crop",
         ],
         sizes: ["S", "M", "L", "XL"],
+        sizeChartUrl: "https://placehold.co/600x800/eeeeee/999999?text=Jacket+Size+Chart",
         description:
           "Áo khoác vỏ gore-tex chống nước, chống gió. Đường cắt tactical với nhiều túi ẩn. Lớp lót fleece mỏng nhẹ giữ ấm tối ưu.",
         presetColor: { name: "Stealth Black", hex: "#111111" },

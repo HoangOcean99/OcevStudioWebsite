@@ -18,6 +18,7 @@ export interface IProduct extends Document {
   bundleItems?: any[];
   colorThemes?: any[];
   sizes: string[];
+  sizeChartUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,6 +42,7 @@ const ProductSchema: Schema = new Schema(
     bundleItems: [{ type: Schema.Types.Mixed }],
     colorThemes: [{ type: Schema.Types.Mixed }],
     sizes: [{ type: String }],
+    sizeChartUrl: { type: String },
     images: [{ type: String }],
   },
   { timestamps: true }

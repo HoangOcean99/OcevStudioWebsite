@@ -242,16 +242,16 @@ export default function CheckoutPage() {
                 
                 <div className="bg-white p-4 rounded-2xl mb-6 inline-block shadow-lg border border-gray-100">
                   <img 
-                    src={`https://img.vietqr.io/image/970436-123456789-print.png?amount=${totalAmount + (cart.length > 0 ? 15 : 0)}&addInfo=${pendingOrderCode}&accountName=NGUYEN VAN A`} 
+                    src="/QR.jpg" 
                     alt="QR Code" 
                     className="w-48 h-48 object-contain"
                   />
                 </div>
                 
                 <div className="bg-gray-50 dark:bg-zinc-950/50 rounded-xl p-4 text-left w-full max-w-sm mb-8 space-y-2 text-sm border border-gray-200 dark:border-zinc-800">
-                  <p><span className="text-gray-500">Ngân hàng:</span> <span className="font-bold text-black dark:text-white float-right">Vietcombank</span></p>
-                  <p><span className="text-gray-500">Số tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">123456789</span></p>
-                  <p><span className="text-gray-500">Chủ tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">NGUYEN VAN A</span></p>
+                  <p><span className="text-gray-500">Ngân hàng:</span> <span className="font-bold text-black dark:text-white float-right">VPBank</span></p>
+                  <p><span className="text-gray-500">Số tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">0968178905</span></p>
+                  <p><span className="text-gray-500">Chủ tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">HOANG HAI DUONG</span></p>
                   <p><span className="text-gray-500">Nội dung:</span> <span className="font-bold text-black dark:text-white float-right">{pendingOrderCode}</span></p>
                 </div>
                 

@@ -7,5 +7,6 @@ export const productSchema = z.object({
     sizes: z.array(z.string()).optional(),
     stock: z.number().min(0).optional(),
     price: z.number().min(0, 'Price cannot be negative').optional(),
+    sizeChartUrl: z.string().url().optional().or(z.literal('')),
   }),
 });

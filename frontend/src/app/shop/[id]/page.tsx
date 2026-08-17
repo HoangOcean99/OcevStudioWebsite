@@ -8,7 +8,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { useState, use, useEffect } from "react";
 import {
   ShoppingBag, ArrowLeft, Star, Heart, Check, ChevronLeft,
-  ChevronRight, ChevronDown, Palette,
+  ChevronRight, ChevronDown, Palette, X
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -185,6 +185,7 @@ export default function ProductDetailPage({
   const [addedCustomBundleSuccess, setAddedCustomBundleSuccess] = useState(false);
   // Active color theme for the whole bundle
   const [selectedTheme, setSelectedTheme] = useState<BundleColorTheme | null>(null);
+  const [activeSizeChart, setActiveSizeChart] = useState<string | null>(null);
 
   // Initialize per-item colors with presetColor defaults
   useEffect(() => {
@@ -565,7 +566,13 @@ export default function ProductDetailPage({
 
                           {/* Size selector */}
                           {item.hasSize !== false && (
-                            <div className="flex gap-1 flex-wrap">
+                            <div className="flex flex-col gap-1">
+                              {item.sizeChartUrl && (
+                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="self-end text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600 mb-1">
+                                  Bảng Size
+                                </button>
+                              )}
+                              <div className="flex gap-1 flex-wrap">
                               {itemSizes.map((s) => {
                                 const sel =
                                   (bundleSizes[item.id] || itemSizes[0]) === s;
@@ -588,6 +595,7 @@ export default function ProductDetailPage({
                                   </button>
                                 );
                               })}
+                            </div>
                             </div>
                           )}
                         </div>
@@ -632,9 +640,16 @@ export default function ProductDetailPage({
             {/* Non-combo product */}
             {!isCombo && (
               <div className="mb-8 p-6 bg-gray-50 dark:bg-zinc-900/50 rounded-3xl border border-gray-100 dark:border-zinc-800">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">
-                  {t("selectSize")}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                    {t("selectSize")}
+                  </h3>
+                  {product.sizeChartUrl && (
+                    <button onClick={() => setActiveSizeChart(product.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
+                      Bảng Size
+                    </button>
+                  )}
+                </div>
                 <div className="flex gap-2 mb-6">
                   {product.sizes.map((s) => (
                     <button
@@ -831,9 +846,16 @@ export default function ProductDetailPage({
                         {/* Size selector */}
                         {item.hasSize !== false && (
                           <div>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
-                              Chọn Kích Thước
-                            </p>
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                Chọn Kích Thước
+                              </p>
+                              {item.sizeChartUrl && (
+                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
+                                  Bảng Size
+                                </button>
+                              )}
+                            </div>
                             <div className="flex gap-1.5 flex-wrap">
                               {(item.sizes?.length
                                 ? item.sizes
@@ -893,6 +915,22 @@ export default function ProductDetailPage({
       </main>
 
       <Footer />
+      {activeSizeChart && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setActiveSizeChart(null)} />
+          <div className="relative bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl">
+            <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-zinc-800">
+              <h3 className="font-bold uppercase tracking-wider">Bảng Size (Size Chart)</h3>
+              <button onClick={() => setActiveSizeChart(null)} className="p-2 bg-gray-100 dark:bg-zinc-800 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="relative flex-1 overflow-auto bg-gray-50 dark:bg-black p-4 flex justify-center">
+              <img src={activeSizeChart} alt="Size Chart" className="max-w-full h-auto object-contain rounded-xl" />
+            </div>
+          </div>
+        </div>
+      )}
       <CartDrawer />
     </div>
   );

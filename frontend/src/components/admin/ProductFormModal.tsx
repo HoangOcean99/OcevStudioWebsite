@@ -22,6 +22,7 @@ export interface AdminProduct {
   isAvailable?: boolean;
   bundleItems?: any[];
   colorThemes?: any[];
+  sizeChartUrl?: string;
 }
 
 interface ProductFormModalProps {
@@ -62,6 +63,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
     sourceLink: "",
     badge: "",
     isAvailable: true,
+    sizeChartUrl: "",
   });
   const [advancedMode, setAdvancedMode] = useState(false);
   const [bundleItems, setBundleItems] = useState<any[]>([]);
@@ -82,6 +84,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
         sourceLink: initial?.sourceLink || "",
         badge: initial?.badge || "",
         isAvailable: initial?.isAvailable !== false,
+        sizeChartUrl: initial?.sizeChartUrl || "",
       });
       setBundleItems(initial?.bundleItems || []);
       setColorThemes(initial?.colorThemes || []);
@@ -137,6 +140,7 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
       sourceLink: form.sourceLink.trim() || undefined,
       badge: form.badge || undefined,
       isAvailable: form.isAvailable,
+      sizeChartUrl: form.sizeChartUrl.trim() || undefined,
     };
 
     if (advancedMode) {
@@ -251,6 +255,15 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                     />
                   </div>
                 )}
+
+                <div className="sm:col-span-2">
+                  <ImageUploader 
+                    folder={`OcevProduct/${form._id}`}
+                    label="Bảng Size (Size Chart) - Ảnh bảng kích thước"
+                    value={form.sizeChartUrl}
+                    onChange={(url) => setForm({ ...form, sizeChartUrl: url })}
+                  />
+                </div>
 
                 <div className="sm:col-span-2">
                   <label className={labelClass}>Mô tả</label>
@@ -492,6 +505,15 @@ export default function ProductFormModal({ open, initial, onClose }: ProductForm
                             <input type="color" value={item.presetColor?.hex || "#000000"} onChange={e => { const newItems = [...bundleItems]; if(!newItems[index].presetColor) newItems[index].presetColor = {}; newItems[index].presetColor.hex = e.target.value; setBundleItems(newItems); }} className="w-10 h-10 rounded-lg cursor-pointer border border-gray-200 dark:border-zinc-700 p-0.5" />
                             <input value={item.presetColor?.hex || ""} onChange={e => { const newItems = [...bundleItems]; if(!newItems[index].presetColor) newItems[index].presetColor = {}; newItems[index].presetColor.hex = e.target.value; setBundleItems(newItems); }} className={inputClass} />
                           </div>
+                        </div>
+
+                        <div className="col-span-2">
+                          <ImageUploader 
+                            folder={`OcevProduct/${form._id}`}
+                            label="Bảng Size (Size Chart) - Của món đồ này"
+                            value={item.sizeChartUrl || ""}
+                            onChange={url => { const newItems = [...bundleItems]; newItems[index].sizeChartUrl = url; setBundleItems(newItems); }}
+                          />
                         </div>
 
                         <div className="col-span-2 mt-4 pt-4 border-t border-gray-200 dark:border-zinc-800">
