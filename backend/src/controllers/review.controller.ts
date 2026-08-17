@@ -73,7 +73,7 @@ export const getReviewsByProduct = async (req: Request, res: Response) => {
 };
 
 // Create a new review
-export const createReview = async (req: Request, res: Response): Promise<void> => {
+export const createReview = async (req: any, res: Response): Promise<void> => {
   try {
     const { productId, rating, content, images, productType } = req.body;
     
@@ -153,7 +153,7 @@ export const likeReview = async (req: Request, res: Response) => {
 };
 
 // Update a review
-export const updateReview = async (req: Request, res: Response): Promise<void> => {
+export const updateReview = async (req: any, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const { rating, content, images } = req.body;
@@ -214,7 +214,7 @@ export const updateReview = async (req: Request, res: Response): Promise<void> =
 };
 
 // Delete a review
-export const deleteReview = async (req: Request, res: Response): Promise<void> => {
+export const deleteReview = async (req: any, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     
