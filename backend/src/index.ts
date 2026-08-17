@@ -18,6 +18,7 @@ import productRoutes from './routes/productRoutes';
 import orderRoutes from './routes/orderRoutes';
 import adminRoutes from './routes/adminRoutes';
 import uploadRoutes from './routes/uploadRoutes';
+import reviewRoutes from './routes/reviewRoutes';
 
 // Parse .env manually from parent directory if needed
 const envPath = path.resolve(__dirname, '../../.env');
@@ -76,6 +77,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.get('/api/seed', async (req, res) => {
   try {

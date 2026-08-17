@@ -80,7 +80,18 @@ export default function AIChatInterface() {
   return (
     <div className="flex-1 flex flex-col h-full bg-white dark:bg-zinc-900 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-xl overflow-hidden">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 relative">
+        {/* Coming soon overlay */}
+        <div className="absolute inset-0 z-10 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-[3px] flex items-center justify-center flex-col gap-3">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center gap-2 animate-bounce">
+            <Bot className="w-5 h-5" />
+            Coming soon in Version 3.0
+          </div>
+          <p className="text-sm font-medium text-gray-800 dark:text-gray-200 bg-white/80 dark:bg-black/80 px-4 py-1.5 rounded-full shadow-sm">
+            Tính năng đang được phát triển
+          </p>
+        </div>
+
         {messages.map((msg) => (
           <div key={msg.id} className={`flex gap-4 ${msg.sender === "user" ? "flex-row-reverse" : ""}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -137,7 +148,9 @@ export default function AIChatInterface() {
           <button
             key={idx}
             onClick={() => handleSend(preset)}
-            className="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300 hover:border-black dark:hover:border-white transition-colors"
+            className="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border border-gray-200 dark:border-zinc-700 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+            disabled
+
           >
             {preset}
           </button>
@@ -152,13 +165,13 @@ export default function AIChatInterface() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
-            placeholder={t("placeholder")}
-            className="w-full bg-white dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-full px-5 py-3.5 pr-14 text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-shadow"
+            disabled
+            placeholder="Tính năng đang được phát triển..."
+            className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full px-5 py-3.5 pr-14 text-sm focus:outline-none cursor-not-allowed opacity-70"
           />
           <button
-            onClick={() => handleSend(input)}
-            disabled={!input.trim() || isTyping}
-            className="absolute right-2 p-2 bg-black text-white dark:bg-white dark:text-black rounded-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+            disabled
+            className="absolute right-2 p-2 bg-gray-300 text-gray-500 dark:bg-zinc-700 dark:text-gray-500 rounded-full cursor-not-allowed"
           >
             <Send className="w-4 h-4" />
           </button>

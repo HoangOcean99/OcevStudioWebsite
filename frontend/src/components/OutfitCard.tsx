@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { X, Heart, Info } from "lucide-react";
+import { X, Eye, Info } from "lucide-react";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export interface OutfitData {
@@ -82,9 +83,6 @@ export default function OutfitCard({ outfit, active, onSwipe, zIndex }: OutfitCa
               <h2 className="text-3xl font-bold mb-1 shadow-sm">{outfit.name}</h2>
               <p className="text-lg font-medium opacity-90">{outfit.price.toLocaleString("vi-VN")} ₫</p>
             </div>
-            <button className="p-3 bg-white/20 backdrop-blur-md rounded-full pointer-events-auto hover:bg-white/30 transition-colors">
-              <Info className="w-5 h-5 text-white" />
-            </button>
           </div>
           <p className="text-sm opacity-80 line-clamp-2">{outfit.description}</p>
         </div>
@@ -98,12 +96,12 @@ export default function OutfitCard({ outfit, active, onSwipe, zIndex }: OutfitCa
             >
               <X className="w-8 h-8" />
             </button>
-            <button
-              onClick={() => handleButtonSwipe("right")}
-              className="pointer-events-auto p-4 bg-white rounded-full shadow-lg text-green-500 hover:scale-110 hover:bg-green-50 transition-all active:scale-95"
+            <Link
+              href={`/shop/${outfit.id}`}
+              className="pointer-events-auto p-4 bg-white rounded-full shadow-lg text-black hover:scale-110 hover:bg-gray-50 transition-all active:scale-95"
             >
-              <Heart className="w-8 h-8" />
-            </button>
+              <Eye className="w-8 h-8" />
+            </Link>
           </div>
         )}
       </div>

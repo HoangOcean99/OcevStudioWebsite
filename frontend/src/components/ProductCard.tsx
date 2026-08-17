@@ -21,13 +21,14 @@ const getValidImageUrl = (url: string | undefined): string => {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { t: tShop } = useTranslation("shop");
   const { t } = useTranslation('common');
-  const { addToCart, toggleWishlist, isInWishlist, setQuickViewProduct } = useAppStore();
+  const { addToCart, setQuickViewProduct } = useAppStore();
   const [selectedSize, setSelectedSize] = useState<string | null>(product.sizes[0] || "M");
   const [isHovered, setIsHovered] = useState(false);
   const [addedSuccess, setAddedSuccess] = useState(false);
 
-  const isFavorite = isInWishlist(product.id);
+
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,17 +71,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         )}
 
-        {/* Wishlist Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist(product.id);
-          }}
-          className="absolute top-3 right-3 p-2 bg-white/80 dark:bg-black/80 rounded-full text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-all z-10 shadow-sm backdrop-blur-sm hover:scale-110 active:scale-95"
-          title="Wishlist"
-        >
-          <Heart className={`w-4 h-4 transition-colors ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-        </button>
+
 
         {/* Bundle Indicator */}
         {product.bundleItems && product.bundleItems.length > 0 && (
@@ -107,9 +98,9 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
           {/* Category */}
-          <div className="text-[10px] text-gray-400 mb-1.5 uppercase tracking-widest font-semibold">
-            {(product.category as string) === 'streetwear' || (product.category as string) === 'techwear' ? 'đồ nam' : (product.category as string) === 'cyberpunk' ? 'đồ nữ' : (product.category as string) === 'minimalist' ? 'đồ đôi' : product.category}
-          </div>
+          <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-1.5 block">
+            {(product.category as string) === 'streetwear' || (product.category as string) === 'techwear' || (product.category as string) === 'đồ nam' ? (tShop("catMenswear") || 'Đồ Nam') : (product.category as string) === 'cyberpunk' || (product.category as string) === 'đồ nữ' ? (tShop("catWomenswear") || 'Đồ Nữ') : (product.category as string) === 'minimalist' || (product.category as string) === 'đồ đôi' ? (tShop("catCoupleswear") || 'Đồ Đôi') : product.category}
+          </span>
 
           <div className="flex justify-between items-start gap-2">
             <Link

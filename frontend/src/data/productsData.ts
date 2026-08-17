@@ -95,11 +95,11 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "urban-ninja-jacket":    { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-pants":     { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-boots":     { name: "Matte Black",   hex: "#1C1C1C", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-cap":       { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-chest-rig": { name: "Gunmetal",      hex: "#2C2C2C", imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-jacket": { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-pants": { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-boots": { name: "Matte Black", hex: "#1C1C1C", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-cap": { name: "Stealth Black", hex: "#111111", imageUrl: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-chest-rig": { name: "Gunmetal", hex: "#2C2C2C", imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -112,11 +112,11 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "urban-ninja-jacket":    { name: "Olive Drab",    hex: "#6B7144", imageUrl: "https://images.unsplash.com/photo-1574130291800-1a2e6a84c7fc?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-pants":     { name: "Khaki",         hex: "#C3B091", imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-boots":     { name: "Ranger Olive",  hex: "#556B2F", imageUrl: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-cap":       { name: "Olive",         hex: "#808000", imageUrl: "https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-chest-rig": { name: "Olive Drab",    hex: "#6B7144", imageUrl: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-jacket": { name: "Olive Drab", hex: "#6B7144", imageUrl: "https://images.unsplash.com/photo-1574130291800-1a2e6a84c7fc?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-pants": { name: "Khaki", hex: "#C3B091", imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-boots": { name: "Ranger Olive", hex: "#556B2F", imageUrl: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-cap": { name: "Olive", hex: "#808000", imageUrl: "https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-chest-rig": { name: "Olive Drab", hex: "#6B7144", imageUrl: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -129,11 +129,11 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "urban-ninja-jacket":    { name: "Midnight Navy", hex: "#1B2A4A", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-pants":     { name: "Slate Grey",    hex: "#708090", imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-boots":     { name: "Matte Black",   hex: "#1C1C1C", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-cap":       { name: "Ash Grey",      hex: "#B2BEB5", imageUrl: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000&auto=format&fit=crop" },
-          "urban-ninja-chest-rig": { name: "Gunmetal",      hex: "#2C2C2C", imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-jacket": { name: "Midnight Navy", hex: "#1B2A4A", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-pants": { name: "Slate Grey", hex: "#708090", imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-boots": { name: "Matte Black", hex: "#1C1C1C", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-cap": { name: "Ash Grey", hex: "#B2BEB5", imageUrl: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000&auto=format&fit=crop" },
+          "urban-ninja-chest-rig": { name: "Gunmetal", hex: "#2C2C2C", imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop" },
         },
       },
     ],
@@ -363,9 +363,9 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "monolith-blazer":   { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-blazer": { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" },
           "monolith-trousers": { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop" },
-          "monolith-heels":    { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-heels": { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -378,9 +378,9 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "monolith-blazer":   { name: "Chalk Black", hex: "#1A1A1A", imageUrl: "https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-blazer": { name: "Chalk Black", hex: "#1A1A1A", imageUrl: "https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1000&auto=format&fit=crop" },
           "monolith-trousers": { name: "Chalk Black", hex: "#1A1A1A", imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop" },
-          "monolith-heels":    { name: "Chalk Black", hex: "#1A1A1A", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-heels": { name: "Chalk Black", hex: "#1A1A1A", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -393,9 +393,9 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "monolith-blazer":   { name: "Stone Beige", hex: "#C9B99A", imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4b4878?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-blazer": { name: "Stone Beige", hex: "#C9B99A", imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4b4878?q=80&w=1000&auto=format&fit=crop" },
           "monolith-trousers": { name: "Stone Beige", hex: "#C9B99A", imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop" },
-          "monolith-heels":    { name: "Pure White",  hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1000&auto=format&fit=crop" },
+          "monolith-heels": { name: "Pure White", hex: "#F9F9F7", imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1000&auto=format&fit=crop" },
         },
       },
     ],
@@ -533,9 +533,9 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "cyber-recon-hoodie": { name: "Deep Purple",  hex: "#3B1F6E", imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-pants":  { name: "Deep Purple",  hex: "#3B1F6E", imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-boots":  { name: "Gloss Black",  hex: "#080808", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-hoodie": { name: "Deep Purple", hex: "#3B1F6E", imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-pants": { name: "Deep Purple", hex: "#3B1F6E", imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-boots": { name: "Gloss Black", hex: "#080808", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -548,9 +548,9 @@ export const PRODUCTS_DATA: Product[] = [
           "https://images.unsplash.com/photo-1609609803847-4c0f9e49a8e4?q=80&w=1000&auto=format&fit=crop",
         ],
         itemColors: {
-          "cyber-recon-hoodie": { name: "Void Black",  hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-pants":  { name: "Void Black",  hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1609609803847-4c0f9e49a8e4?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-boots":  { name: "Gloss Black", hex: "#080808", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-hoodie": { name: "Void Black", hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-pants": { name: "Void Black", hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1609609803847-4c0f9e49a8e4?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-boots": { name: "Gloss Black", hex: "#080808", imageUrl: "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop" },
         },
       },
       {
@@ -564,8 +564,8 @@ export const PRODUCTS_DATA: Product[] = [
         ],
         itemColors: {
           "cyber-recon-hoodie": { name: "Electric Blue", hex: "#0047AB", imageUrl: "https://images.unsplash.com/photo-1551854838-212c50b4c184?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-pants":  { name: "Void Black",    hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1609609803847-4c0f9e49a8e4?q=80&w=1000&auto=format&fit=crop" },
-          "cyber-recon-boots":  { name: "Chrome Silver", hex: "#C0C0C0", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-pants": { name: "Void Black", hex: "#0D0D0D", imageUrl: "https://images.unsplash.com/photo-1609609803847-4c0f9e49a8e4?q=80&w=1000&auto=format&fit=crop" },
+          "cyber-recon-boots": { name: "Chrome Silver", hex: "#C0C0C0", imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" },
         },
       },
     ],

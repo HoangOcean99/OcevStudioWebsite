@@ -14,6 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 export default function LandingPage() {
   const { t } = useTranslation('landing');
+  const { t: tShop } = useTranslation('shop');
   const products = useAppStore(state => state.products);
   const setSelectedCategory = useAppStore(state => state.setSelectedCategory);
   const featuredProducts = products.slice(0, 4);
@@ -81,17 +82,17 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
-              title: "Đồ Nam",
+              title: tShop("catMenswear") || "Đồ Nam",
               img: "/donam.jpg",
               cat: "đồ nam",
             },
             {
-              title: "Đồ Nữ",
+              title: tShop("catWomenswear") || "Đồ Nữ",
               img: "/donu.jpg",
               cat: "đồ nữ",
             },
             {
-              title: "Đồ Đôi",
+              title: tShop("catCoupleswear") || "Đồ Đôi",
               img: "/dodoi.jpg",
               cat: "đồ đôi",
             },

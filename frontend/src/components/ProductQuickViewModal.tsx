@@ -1,13 +1,16 @@
 "use client";
 
 import { useAppStore } from "@/store/useAppStore";
+import { useTranslation } from "@/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, Star, ShoppingBag, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function ProductQuickViewModal() {
-  const { quickViewProduct, setQuickViewProduct, addToCart, toggleWishlist, isInWishlist, toggleCart } = useAppStore();
+  const { t: tShop } = useTranslation("shop");
+  const { t } = useTranslation("productDetail");
+  const { quickViewProduct, setQuickViewProduct, addToCart, toggleCart, toggleWishlist, wishlist } = useAppStore();
   const [selectedSize, setSelectedSize] = useState<string>("M");
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState<string | null>(null);
@@ -15,7 +18,7 @@ export default function ProductQuickViewModal() {
   if (!quickViewProduct) return null;
 
   const currentImage = activeImage || quickViewProduct.imageUrl;
-  const isFavorite = isInWishlist(quickViewProduct.id);
+  const isFavorite = wishlist.includes(quickViewProduct.id);
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -50,7 +53,7 @@ export default function ProductQuickViewModal() {
           {/* Modal Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 0, scale: 1, y: 0 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed inset-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[90vw] sm:max-w-4xl max-h-[90vh] bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-zinc-800"
@@ -106,8 +109,8 @@ export default function ProductQuickViewModal() {
               <div>
                 {/* Category & Badge */}
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
-                    {(quickViewProduct.category as string) === 'streetwear' || (quickViewProduct.category as string) === 'techwear' ? 'đồ nam' : (quickViewProduct.category as string) === 'cyberpunk' ? 'đồ nữ' : (quickViewProduct.category as string) === 'minimalist' ? 'đồ đôi' : quickViewProduct.category}
+                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-400">
+                    {(quickViewProduct.category as string) === 'streetwear' || (quickViewProduct.category as string) === 'techwear' || (quickViewProduct.category as string) === 'đồ nam' ? (tShop("catMenswear") || 'Đồ Nam') : (quickViewProduct.category as string) === 'cyberpunk' || (quickViewProduct.category as string) === 'đồ nữ' ? (tShop("catWomenswear") || 'Đồ Nữ') : (quickViewProduct.category as string) === 'minimalist' || (quickViewProduct.category as string) === 'đồ đôi' ? (tShop("catCoupleswear") || 'Đồ Đôi') : quickViewProduct.category}
                   </span>
                   {quickViewProduct.badge && (
                     <span className="px-2.5 py-0.5 text-[10px] font-black bg-black text-white dark:bg-white dark:text-black rounded-full uppercase">
@@ -182,6 +185,7 @@ export default function ProductQuickViewModal() {
                   <div className="flex items-center gap-3">
                     <div className="flex items-center border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden bg-gray-50 dark:bg-zinc-800">
                       <button
+                        type="button"
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         className="px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700 font-bold"
                       >

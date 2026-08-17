@@ -40,6 +40,39 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
   }
 });
 
+// Upload Multiple Images for Reviews (Only requires protect, not admin)
+router.post('/reviews', protect, upload.array('images', 5), async (req, res) => {
+  try {
+    if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+      res.status(400);
+      throw new Error('No image files provided');
+    }
+
+    const { productId } = req.body;
+    const folder = productId ? `ocevstudio/reviews/${productId}` : 'ocevstudio/reviews';
+    
+    const uploadPromises = req.files.map((file) => {
+      const b64 = Buffer.from(file.buffer).toString('base64');
+      const dataURI = "data:" + file.mimetype + ";base64," + b64;
+      return cloudinary.uploader.upload(dataURI, {
+        folder: folder,
+        resource_type: 'auto',
+      });
+    });
+
+    const results = await Promise.all(uploadPromises);
+    const urls = results.map(result => result.secure_url);
+
+    res.json({
+      urls,
+      success: true
+    });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message || 'Images upload failed' });
+  }
+});
+
 // Delete Image
 router.delete('/', protect, admin, async (req, res) => {
   try {

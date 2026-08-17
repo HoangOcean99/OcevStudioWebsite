@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Globe, MessageCircle } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Footer() {
+  const { t } = useTranslation('footer');
+
   return (
     <footer className="bg-[#F3F4F6] dark:bg-[#121212] text-gray-600 dark:text-gray-400 border-t border-gray-200/50 dark:border-zinc-900 py-8 font-sans transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,29 +15,36 @@ export default function Footer() {
 
           {/* Brand Info */}
           <div className="flex flex-col items-center text-center space-y-4">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <div className="relative w-8 h-8 hover:scale-105 transition-transform">
+                <img
+                  src="/MainLogo.png"
+                  alt="OcevStudio Logo"
+                  className="w-full h-full object-contain dark:invert dark:hue-rotate-180"
+                />
+              </div>
               <span className="font-black text-2xl tracking-widest text-gray-900 dark:text-white uppercase transition-colors">
                 OCEV<span className="text-gray-400 dark:text-gray-500 font-light">STUDIO</span>
               </span>
             </Link>
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-sm transition-colors">
-              Engineering the next era of high-street aesthetic fashion.
+              {t("tagline")}
             </p>
           </div>
 
           {/* Navigation */}
           <div className="flex flex-col items-center text-center">
-            <h5 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 transition-colors">Khám phá</h5>
+            <h5 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 transition-colors">{t("explore")}</h5>
             <ul className="space-y-2.5 text-xs flex flex-col items-center">
-              <li><Link href="/" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">Trang chủ</Link></li>
-              <li><Link href="/shop" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">Cửa hàng</Link></li>
-              <li><Link href="/studio" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">Phòng thử đồ</Link></li>
+              <li><Link href="/" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">{t("home")}</Link></li>
+              <li><Link href="/shop" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">{t("shopLink")}</Link></li>
+              <li><Link href="/studio" className="hover:text-black dark:hover:text-white transition-colors text-gray-500 dark:text-gray-400">{t("studio")}</Link></li>
             </ul>
           </div>
 
           {/* Social & Help */}
           <div className="flex flex-col items-center text-center">
-            <h5 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 transition-colors">Kết nối</h5>
+            <h5 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 transition-colors">{t("connect")}</h5>
             <div className="flex gap-3 mb-4 justify-center">
               <a href="https://www.facebook.com/profile.php?id=61592672079788" target="_blank" rel="noopener noreferrer" className="p-2 bg-white dark:bg-zinc-900 shadow-sm border border-gray-200 dark:border-zinc-800 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-500 transition-colors" title="Facebook">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -57,13 +67,13 @@ export default function Footer() {
                 <ShoppingBag className="w-4 h-4" />
               </a>
             </div>
-            <p className="text-[11px] text-gray-500 font-medium">care@ocevstudio.com</p>
+            <p className="text-[11px] text-gray-500 font-medium">ocevstudio@gmail.com</p>
           </div>
         </div>
 
         {/* Bottom copyright */}
         <div className="border-t border-gray-200 dark:border-zinc-900 pt-6 flex flex-col items-center justify-center text-[11px] text-gray-400 transition-colors">
-          <p>© 2026 OCEV STUDIO. All rights reserved.</p>
+          <p>{t("copyright")}</p>
         </div>
 
       </div>

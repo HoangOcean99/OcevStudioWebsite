@@ -5,6 +5,7 @@ import { BundleItem, BundleColorTheme, ItemColor } from "@/data/productsData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
+import ProductReviews from "@/components/ProductReviews";
 import { useState, use, useEffect } from "react";
 import {
   ShoppingBag, ArrowLeft, Star, Heart, Check, ChevronLeft,
@@ -36,59 +37,89 @@ const TYPE_LABELS: Record<string, string> = {
 const ImageSlider = ({
   images,
   altPrefix,
+  onImageClick,
 }: {
   images: string[];
   altPrefix: string;
+  onImageClick?: (images: string[], index: number) => void;
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  const next = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const next = (e?: React.MouseEvent | React.TouchEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
-  const prev = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const prev = (e?: React.MouseEvent | React.TouchEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 40) {
+      next(); // Swiped left, go to next
+    } else if (diff < -40) {
+      prev(); // Swiped right, go to prev
+    }
+    setTouchStartX(null);
   };
 
   if (images.length <= 1) {
     return (
-      <Image
-        src={getValidImageUrl(images[0])}
-        alt={altPrefix}
-        fill
-        className="object-cover"
-        priority
-      />
+      <div 
+        className={`relative w-full h-full group ${onImageClick ? 'cursor-zoom-in' : ''}`} 
+        onClick={() => onImageClick?.(images, 0)}
+      >
+        <Image
+          src={getValidImageUrl(images[0])}
+          alt={altPrefix}
+          fill
+          className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          priority
+        />
+      </div>
     );
   }
 
   return (
-    <div className="relative w-full h-full group/slider">
+    <div 
+      className={`relative w-full h-full group/slider overflow-hidden touch-pan-y ${onImageClick ? 'cursor-zoom-in' : ''}`}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={() => onImageClick?.(images, currentIndex)}
+    >
       <Image
         src={getValidImageUrl(images[currentIndex])}
         alt={`${altPrefix} - ${currentIndex + 1}`}
         fill
-        className="object-cover transition-opacity duration-300"
+        className="object-cover transition-all duration-300 pointer-events-none group-hover/slider:scale-[1.02]"
         priority={currentIndex === 0}
       />
 
+      {/* Buttons: always visible on touch devices, hover visible on desktops */}
       <button
         onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white/70 dark:bg-black/70 hover:bg-white dark:hover:bg-black backdrop-blur-md rounded-full shadow-md text-gray-800 dark:text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10"
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white/70 dark:bg-black/70 hover:bg-white dark:hover:bg-black backdrop-blur-md rounded-full shadow-md text-gray-800 dark:text-white opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-all z-20"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white/70 dark:bg-black/70 hover:bg-white dark:hover:bg-black backdrop-blur-md rounded-full shadow-md text-gray-800 dark:text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10"
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white/70 dark:bg-black/70 hover:bg-white dark:hover:bg-black backdrop-blur-md rounded-full shadow-md text-gray-800 dark:text-white opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-all z-20"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-20">
         {images.map((_, idx) => (
           <div
             key={idx}
@@ -165,11 +196,12 @@ export default function ProductDetailPage({
 
   const { t } = useTranslation("productDetail");
   const { t: tCommon } = useTranslation("common");
-  const { addToCart, toggleWishlist, isInWishlist, products, isLoadingProducts } =
+  const { t: tShop } = useTranslation("shop");
+  const { addToCart, products, isLoadingProducts } =
     useAppStore();
 
   const product = products.find((p) => p.id === id);
-  const isFavorite = product ? isInWishlist(product.id) : false;
+
 
   // ── States ──────────────────────────────────────────────────────────────────
   const [mainSize, setMainSize] = useState<string>("M");
@@ -188,6 +220,17 @@ export default function ProductDetailPage({
   const [activeSizeChart, setActiveSizeChart] = useState<string | null>(null);
 
   // Initialize per-item colors with presetColor defaults
+  // Product Modal State
+  const [modalImages, setModalImages] = useState<string[]>([]);
+  const [modalIndex, setModalIndex] = useState<number>(0);
+  const [showImageModal, setShowImageModal] = useState(false);
+
+  const openImageModal = (images: string[], index: number) => {
+    setModalImages(images);
+    setModalIndex(index);
+    setShowImageModal(true);
+  };
+
   useEffect(() => {
     if (product?.bundleItems) {
       const defaults: Record<string, ItemColor> = {};
@@ -361,7 +404,7 @@ export default function ProductDetailPage({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* ── Left: Image ─────────────────────────────────────────────────── */}
           <div className="space-y-4">
-            <div className="relative w-full aspect-[4/5] bg-gray-100 dark:bg-zinc-900 rounded-3xl overflow-hidden group">
+            <div className="relative w-full aspect-[3/4] sm:aspect-square bg-gray-100 dark:bg-zinc-900 rounded-3xl overflow-hidden mb-4 sm:mb-6">
               <ImageSlider
                 images={
                   selectedTheme?.images && selectedTheme.images.length > 0
@@ -371,34 +414,29 @@ export default function ProductDetailPage({
                     : [product.imageUrl]
                 }
                 altPrefix={product.name || "Product"}
+                onImageClick={openImageModal}
               />
-              <button
-                onClick={() => toggleWishlist(product.id)}
-                className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-md text-gray-700 dark:text-white hover:scale-110 active:scale-95 transition-all shadow-lg z-10"
-              >
-                <Heart
-                  className={`w-5 h-5 transition-colors ${
-                    isFavorite ? "fill-red-500 text-red-500" : ""
-                  }`}
-                />
-              </button>
+
             </div>
           </div>
 
           {/* ── Right: Info ──────────────────────────────────────────────────── */}
           <div className="flex flex-col">
-            {/* Category & Rating */}
             <div className="flex justify-between items-center text-xs text-gray-400 mb-2 uppercase tracking-wider font-semibold">
-              <span>{(product.category as string) === 'streetwear' || (product.category as string) === 'techwear' ? 'đồ nam' : (product.category as string) === 'cyberpunk' ? 'đồ nữ' : (product.category as string) === 'minimalist' ? 'đồ đôi' : product.category}</span>
-              <div className="flex items-center gap-1 text-amber-500">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-gray-700 dark:text-gray-300 font-bold">
-                  {product.rating}
-                </span>
-                <span className="text-gray-400">
-                  ({product.reviewsCount} đánh giá)
-                </span>
-              </div>
+              <span>{(product.category as string) === 'streetwear' || (product.category as string) === 'techwear' || (product.category as string) === 'đồ nam' ? (tShop("catMenswear") || 'Đồ Nam') : (product.category as string) === 'cyberpunk' || (product.category as string) === 'đồ nữ' ? (tShop("catWomenswear") || 'Đồ Nữ') : (product.category as string) === 'minimalist' || (product.category as string) === 'đồ đôi' ? (tShop("catCoupleswear") || 'Đồ Đôi') : product.category}</span>
+              {product.reviewsCount && product.reviewsCount > 0 ? (
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  <span className="text-gray-700 dark:text-gray-300 font-bold">
+                    {product.rating}
+                  </span>
+                  <span className="text-gray-400">
+                    ({product.reviewsCount} đánh giá)
+                  </span>
+                </div>
+              ) : (
+                <span className="text-gray-400 font-medium lowercase">{t("noReviewsShort") || "Chưa có đánh giá"}</span>
+              )}
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight mb-4">
@@ -416,7 +454,7 @@ export default function ProductDetailPage({
               )}
               {isCombo && (
                 <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold rounded-lg ml-2">
-                  Tiết Kiệm Combo
+                  {t("comboSaveBadge") || "Tiết Kiệm Combo"}
                 </span>
               )}
             </div>
@@ -434,7 +472,7 @@ export default function ProductDetailPage({
                       {t("buyCompleteSet")}
                     </h3>
                     <p className="text-xs text-orange-700/70 dark:text-orange-300/70">
-                      {t("totalBundlePrice")}: {safePrice.toLocaleString("vi-VN")} ₫ — Tiết kiệm{" "}
+                      {t("totalBundlePrice")}: {safePrice.toLocaleString("vi-VN")} ₫ — {t("saveText") || "Tiết kiệm"}{" "}
                       {Math.round(
                         ((bundleItemsTotal - safePrice) / bundleItemsTotal) * 100
                       )}
@@ -447,7 +485,7 @@ export default function ProductDetailPage({
                     <div className="mb-5">
                       <p className="text-[11px] font-black text-orange-800 dark:text-orange-200 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                         <Palette className="w-3.5 h-3.5" />
-                        Tone màu bộ
+                        {t("bundleTone") || "Tone màu bộ"}
                       </p>
                       <div className="grid grid-cols-3 gap-2">
                         {product.colorThemes.map((theme) => {
@@ -501,7 +539,7 @@ export default function ProductDetailPage({
                       <span className="w-4 h-4 rounded-full bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center">
                         <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                       </span>
-                      Màu & Kích thước từng món
+                      {t("itemColorsAndSizes") || "Màu & Kích thước từng món"}
                     </p>
                     {product.bundleItems?.map((item) => {
                       const itemSizes = item.hasSize === false
@@ -569,7 +607,7 @@ export default function ProductDetailPage({
                             <div className="flex flex-col gap-1">
                               {item.sizeChartUrl && (
                                 <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="self-end text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600 mb-1">
-                                  Bảng Size
+                                  {t("sizeGuide") || "Bảng Size"}
                                 </button>
                               )}
                               <div className="flex gap-1 flex-wrap">
@@ -616,7 +654,7 @@ export default function ProductDetailPage({
                     ) : (
                       <ShoppingBag className="w-5 h-5" />
                     )}
-                    {addedBundleSuccess ? "Đã Thêm Vào Giỏ" : "Thêm Cả Bộ Vào Giỏ"}
+                    {addedBundleSuccess ? (t("addedToCart") || "Đã Thêm Vào Giỏ") : (t("addBundleToCartBtn") || "Thêm Cả Bộ Vào Giỏ")}
                   </button>
                 </div>
               </div>
@@ -632,7 +670,7 @@ export default function ProductDetailPage({
                 }
                 className="w-full flex flex-col items-center justify-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-widest hover:text-indigo-800 transition-colors py-4 opacity-80 hover:opacity-100 group"
               >
-                <span>Khám phá các món lẻ</span>
+                <span>{t("exploreIndividualItems") || "Khám phá các món lẻ"}</span>
                 <ChevronDown className="w-5 h-5 animate-bounce" />
               </button>
             )}
@@ -646,7 +684,7 @@ export default function ProductDetailPage({
                   </h3>
                   {product.sizeChartUrl && (
                     <button onClick={() => setActiveSizeChart(product.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
-                      Bảng Size
+                      {t("sizeGuide") || "Bảng Size"}
                     </button>
                   )}
                 </div>
@@ -698,22 +736,22 @@ export default function ProductDetailPage({
             <div className="mb-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 bg-gray-50 dark:bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-zinc-800">
               <div className="flex-1">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest mb-4">
-                  Mua Lẻ Từng Món
+                  {t("buyIndividualItems") || "Mua Lẻ Từng Món"}
                 </div>
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white mb-2">
-                  Các Món Trong Bộ Này
+                  {t("itemsInThisBundle") || "Các Món Trong Bộ Này"}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400 max-w-2xl text-sm mb-1">
-                  Tự chọn màu sắc riêng cho từng món và ghép thành combo theo ý thích.
+                  {t("customColorDesc") || "Tự chọn màu sắc riêng cho từng món và ghép thành combo theo ý thích."}
                 </p>
                 {selectedTheme && (
                   <p className="text-indigo-500 dark:text-indigo-400 max-w-2xl text-[11px] font-semibold mb-1 flex items-center gap-1">
                     <Palette className="w-3 h-3" />
-                    Màu gợi ý theo tone <span className="font-black">&ldquo;{selectedTheme.name}&rdquo;</span> — bạn vẫn có thể đổi màu riêng cho từng món bên dưới.
+                    {t("suggestedTone") || "Màu gợi ý theo tone"} <span className="font-black">&ldquo;{selectedTheme.name}&rdquo;</span> {t("youCanStillChange") || "— bạn vẫn có thể đổi màu riêng cho từng món bên dưới."}
                   </p>
                 )}
                 <p className="text-indigo-600 dark:text-indigo-400 max-w-2xl text-[11px] font-bold italic">
-                  * Chọn càng nhiều món, giảm giá càng sâu (lên đến 10%)!
+                  {t("moreItemsMoreDiscount") || "* Chọn càng nhiều món, giảm giá càng sâu (lên đến 10%)!"}
                 </p>
               </div>
 
@@ -721,7 +759,7 @@ export default function ProductDetailPage({
               <div className="flex flex-col items-center lg:items-end w-full lg:w-auto bg-white dark:bg-black p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800">
                 <div className="flex items-end gap-3 mb-4">
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
-                    Tổng cộng
+                    {t("totalSum") || "Tổng cộng"}
                   </p>
                   <span className="text-3xl font-black text-gray-900 dark:text-white">
                     {customFinalTotal.toLocaleString("vi-VN")} ₫
@@ -734,7 +772,7 @@ export default function ProductDetailPage({
                 </div>
                 {customDiscountPercent > 0 && (
                   <p className="text-xs font-black text-green-500 bg-green-100 dark:bg-green-900/30 px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
-                    Đã Áp Dụng Giảm {customDiscountPercent * 100}%!
+                    {t("discountApplied") || "Đã Áp Dụng Giảm"} {customDiscountPercent * 100}%!
                   </p>
                 )}
                 <button
@@ -754,8 +792,8 @@ export default function ProductDetailPage({
                     <ShoppingBag className="w-4 h-4" />
                   )}
                   {addedCustomBundleSuccess
-                    ? "Đã Thêm Vào Giỏ!"
-                    : `Thêm ${customItemsCount} Món Đã Chọn`}
+                    ? (t("addedToCart") || "Đã Thêm Vào Giỏ!")
+                    : (t("addSelectedItems") || "Thêm {count} Món Đã Chọn").replace("{count}", customItemsCount.toString())}
                 </button>
               </div>
             </div>
@@ -764,11 +802,28 @@ export default function ProductDetailPage({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {product.bundleItems?.map((item) => {
                 const chosenColor = itemColors[item.id] || item.presetColor;
-                const displayImages = chosenColor?.imageUrl
-                  ? [chosenColor.imageUrl]
-                  : item.images?.length
-                  ? item.images
-                  : [item.imageUrl];
+                
+                // Combine main imageUrl with extra images array
+                let combinedItemImages = [item.imageUrl];
+                if (item.images && item.images.length > 0) {
+                  item.images.forEach(img => {
+                    if (img !== item.imageUrl) combinedItemImages.push(img);
+                  });
+                }
+
+                // Fallback to parent product's images if the item itself doesn't define multiple images
+                let baseImages = combinedItemImages.length > 1 
+                  ? combinedItemImages 
+                  : (product.images?.length > 1 ? [...product.images] : combinedItemImages);
+                  
+                let displayImages = [...baseImages];
+                
+                if (chosenColor?.imageUrl) {
+                  displayImages = [
+                    chosenColor.imageUrl,
+                    ...displayImages.filter(img => img !== chosenColor.imageUrl)
+                  ];
+                }
 
                 return (
                   <div
@@ -781,6 +836,7 @@ export default function ProductDetailPage({
                         <ImageSlider
                           images={displayImages}
                           altPrefix={item.name || "Bundle Item"}
+                          onImageClick={openImageModal}
                         />
                       </div>
 
@@ -800,6 +856,7 @@ export default function ProductDetailPage({
                             ? "#4f46e5"
                             : "transparent",
                         }}
+                        title={selectedCustomItems.includes(item.id) ? (t("selectedToCombo") || "Đã Chọn Vào Combo") : (t("selectToCombo") || "Chọn Vào Combo")}
                       >
                         <div
                           className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
@@ -848,11 +905,11 @@ export default function ProductDetailPage({
                           <div>
                             <div className="flex items-center justify-between mb-2">
                               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                                Chọn Kích Thước
+                                {t("selectSizeHeader") || "Chọn Kích Thước"}
                               </p>
                               {item.sizeChartUrl && (
                                 <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
-                                  Bảng Size
+                                  {t("sizeGuide") || "Bảng Size"}
                                 </button>
                               )}
                             </div>
@@ -898,10 +955,10 @@ export default function ProductDetailPage({
                         >
                           {selectedCustomItems.includes(item.id) ? (
                             <>
-                              <Check className="w-4 h-4" /> Đã Chọn
+                              <Check className="w-4 h-4" /> {t("selectedToCombo") || "Đã Chọn Vào Combo"}
                             </>
                           ) : (
-                            <>Chọn Vào Combo</>
+                            <>{t("selectToCombo") || "Chọn Vào Combo"}</>
                           )}
                         </button>
                       </div>
@@ -912,6 +969,64 @@ export default function ProductDetailPage({
             </div>
           </div>
         )}
+
+        {/* Global Image Modal */}
+        {showImageModal && modalImages.length > 0 && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4" onClick={() => setShowImageModal(false)}>
+            <button 
+              className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-[110]"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowImageModal(false);
+              }}
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <div className="relative w-full max-w-5xl h-[85vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              <img 
+                src={modalImages[modalIndex]} 
+                className="max-w-full max-h-full object-contain rounded-lg"
+                alt="Enlarged product" 
+              />
+              
+              {modalImages.length > 1 && (
+                <>
+                  <button 
+                    className="absolute left-0 md:left-4 p-3 bg-black/50 hover:bg-black/80 rounded-full text-white transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalIndex(prev => (prev - 1 + modalImages.length) % modalImages.length);
+                    }}
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button 
+                    className="absolute right-0 md:right-4 p-3 bg-black/50 hover:bg-black/80 rounded-full text-white transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalIndex(prev => (prev + 1) % modalImages.length);
+                    }}
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex gap-2">
+                    {modalImages.map((_, idx) => (
+                      <button 
+                        key={idx} 
+                        onClick={() => setModalIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all ${idx === modalIndex ? 'bg-white w-4' : 'bg-white/30 hover:bg-white/60'}`} 
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Product Reviews */}
+        <ProductReviews productId={product.id} />
       </main>
 
       <Footer />

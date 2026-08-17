@@ -8,11 +8,10 @@ import ProductQuickViewModal from "@/components/ProductQuickViewModal";
 import ProductCard from "@/components/ProductCard";
 import ShopHero from "@/components/ShopHero";
 import { useState, useMemo, useEffect, Suspense } from "react";
-import { Search, SlidersHorizontal, Grid2X2, Grid3X3, LayoutGrid, Heart, Flame, RotateCcw } from "lucide-react";
+import { Search, SlidersHorizontal, Flame, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
-import LookbookView from "@/components/LookbookView";
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -26,9 +25,6 @@ function ShopContent() {
     setSearchQuery,
     sortBy,
     setSortBy,
-    viewMode,
-    setViewMode,
-    wishlist,
     products,
     isLoadingProducts,
   } = useAppStore();
@@ -38,22 +34,14 @@ function ShopContent() {
     { id: "đồ nam", label: t("catMenswear") },
     { id: "đồ nữ", label: t("catWomenswear") },
     { id: "đồ đôi", label: t("catCoupleswear") },
-    { id: "wishlist", label: `${t("wishlist")} (${wishlist.length})`, isWishlist: true },
   ];
 
-  useEffect(() => {
-    if (filterParam === "wishlist") {
-      setSelectedCategory("wishlist");
-    }
-  }, [filterParam, setSelectedCategory]);
 
   // Filter & Sort Products logic
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       // Category filter
-      if (selectedCategory === "wishlist") {
-        if (!wishlist.includes(product.id)) return false;
-      } else if (selectedCategory !== "all" && product.category !== selectedCategory) {
+      if (selectedCategory !== "all" && product.category !== selectedCategory) {
         return false;
       }
 
@@ -73,7 +61,7 @@ function ShopContent() {
       if (sortBy === "newest") return b.badge === "NEW" ? 1 : -1;
       return 0; // featured
     });
-  }, [selectedCategory, searchQuery, sortBy, wishlist]);
+  }, [selectedCategory, searchQuery, sortBy]);
 
   // Determine grid column class - fewer columns for larger, more premium cards
   const gridClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
@@ -102,7 +90,6 @@ function ShopContent() {
                       : "bg-transparent text-gray-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
                     }`}
                 >
-                  {cat.isWishlist && <Heart className={`w-3.5 h-3.5 ${wishlist.length > 0 ? "fill-red-500 text-red-500" : ""}`} />}
                   {cat.label}
                 </button>
               ))}
@@ -122,30 +109,7 @@ function ShopContent() {
                 />
               </div>
 
-              {/* Right Side: View Toggle & Sort */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto lg:justify-end">
-                {/* View Toggle */}
-                <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 p-1 rounded-full border border-gray-200 dark:border-zinc-800 shadow-sm">
-                <button
-                  onClick={() => setViewMode("grid-2")}
-                  className={`px-4 py-1.5 text-[10px] font-bold rounded-full transition-all uppercase ${
-                    viewMode.startsWith("grid") ? "bg-white dark:bg-zinc-800 shadow-sm text-black dark:text-white" : "text-gray-500 hover:text-black dark:hover:text-white"
-                  }`}
-                >
-                  Grid View
-                </button>
-                <div className="w-10 h-5 bg-gray-300 dark:bg-zinc-600 rounded-full relative cursor-pointer" onClick={() => setViewMode(viewMode === "lookbook" ? "grid-2" : "lookbook")}>
-                  <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${viewMode === "lookbook" ? "translate-x-5" : ""}`} />
-                </div>
-                <button
-                  onClick={() => setViewMode("lookbook")}
-                  className={`px-4 py-1.5 text-[10px] font-bold rounded-full transition-all uppercase ${
-                    viewMode === "lookbook" ? "bg-white dark:bg-zinc-800 shadow-sm text-black dark:text-white" : "text-gray-500 hover:text-black dark:hover:text-white"
-                  }`}
-                >
-                  Lookbook View
-                </button>
-              </div>
+
 
               <div className="flex items-center gap-2">
                 <select
@@ -161,7 +125,6 @@ function ShopContent() {
               </div>
             </div>
           </div>
-        </div>
 
           {(selectedCategory !== "all" || searchQuery !== "") && (
             <div className="flex justify-between items-center text-xs text-gray-500 font-medium px-2">
@@ -187,15 +150,11 @@ function ShopContent() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
           </div>
         ) : filteredProducts.length > 0 ? (
-          viewMode === "lookbook" ? (
-             <LookbookView outfit={filteredProducts.find(p => p.bundleItems && p.bundleItems.length > 0) || filteredProducts[0]} />
-          ) : (
-            <div className={`grid ${gridClass} gap-4 sm:gap-6`} >
+          <div className={`grid ${gridClass} gap-4 sm:gap-6`}>
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
-          )
         ) : (
           <div className="text-center py-24 bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-dashed border-gray-200 dark:border-zinc-800 p-6">
             <Search className="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4 mx-auto" />

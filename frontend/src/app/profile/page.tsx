@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useTranslation } from "@/hooks/useTranslation";
-import { User, MapPin, Phone, CheckCircle2, Loader2, Shirt, Footprints } from "lucide-react";
+import { User, MapPin, Phone, CheckCircle2, Loader2, Shirt, Footprints, Ruler } from "lucide-react";
 import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import toast from 'react-hot-toast';
@@ -108,11 +108,15 @@ export default function ProfilePage() {
                   <div className="border-t border-gray-200 dark:border-zinc-700 my-2 pt-2"></div>
                   <div className="flex items-center gap-3 text-sm">
                     <Shirt className="w-4 h-4 text-gray-400" />
-                    <span className="font-medium text-gray-700 dark:text-gray-300">Áo: {user.shirtSize || "N/A"}</span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t("shirtSize")}: {user.shirtSize || "N/A"}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <Ruler className="w-4 h-4 text-gray-400" />
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t("pantsSize")}: {user.pantsSize || "N/A"}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Footprints className="w-4 h-4 text-gray-400" />
-                    <span className="font-medium text-gray-700 dark:text-gray-300">Giày: {user.shoeSize || "N/A"}</span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t("shoeSize")}: {user.shoeSize || "N/A"}</span>
                   </div>
                 </div>
               </div>
@@ -202,7 +206,7 @@ export default function ProfilePage() {
                         onChange={handleInputChange} 
                         className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                       >
-                        <option value="">- Chọn -</option>
+                        <option value="">{t("selectPlaceholder")}</option>
                         <option value="S">Small (S)</option>
                         <option value="M">Medium (M)</option>
                         <option value="L">Large (L)</option>
@@ -219,7 +223,7 @@ export default function ProfilePage() {
                         onChange={handleInputChange} 
                         className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                       >
-                        <option value="">- Chọn -</option>
+                        <option value="">{t("selectPlaceholder")}</option>
                         <option value="S (28-30)">S (28-30)</option>
                         <option value="M (31-32)">M (31-32)</option>
                         <option value="L (33-34)">L (33-34)</option>
@@ -236,7 +240,7 @@ export default function ProfilePage() {
                         onChange={handleInputChange} 
                         className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                       >
-                        <option value="">- Chọn -</option>
+                        <option value="">{t("selectPlaceholder")}</option>
                         <option value="34">34</option>
                         <option value="35">35</option>
                         <option value="36">36</option>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/data/productsData";
-import { Heart, Search, Play, ShoppingBag } from "lucide-react";
+import { Search, Play, ShoppingBag } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -12,7 +12,7 @@ interface LookbookViewProps {
 }
 
 export default function LookbookView({ outfit }: LookbookViewProps) {
-  const { toggleWishlist, isInWishlist, setQuickViewProduct } = useAppStore();
+  const { setQuickViewProduct } = useAppStore();
   const { t } = useTranslation('common');
 
   if (!outfit) {
@@ -80,9 +80,7 @@ export default function LookbookView({ outfit }: LookbookViewProps) {
           <div className="col-span-1 md:col-span-1 h-[320px] relative rounded-2xl bg-zinc-900 overflow-hidden group border border-zinc-800 shadow-md">
             <Image src={item1.imageUrl} alt={item1.name} fill className="object-cover transition-opacity duration-500 group-hover:opacity-80" />
             <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md text-white text-[9px] uppercase border border-white/20 rounded-md">#GORE-TEX</div>
-            <button className="absolute top-3 right-3 p-1.5 text-white/70 hover:text-white transition-colors">
-              <Heart className="w-4 h-4" />
-            </button>
+
             <div className="absolute top-10 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-[9px] text-white/80 cursor-pointer hover:bg-white hover:text-black transition-colors">
                <Search className="w-3 h-3" /> Thử Đồ AI
             </div>
@@ -98,9 +96,7 @@ export default function LookbookView({ outfit }: LookbookViewProps) {
           <div className="col-span-1 md:col-span-1 h-[320px] relative rounded-2xl bg-zinc-900 overflow-hidden group border border-zinc-800 shadow-md">
             <Image src={item2.imageUrl} alt={item2.name} fill className="object-cover transition-opacity duration-500 group-hover:opacity-80" />
             <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md text-white text-[9px] uppercase border border-white/20 rounded-md">#POCKETS</div>
-            <button className="absolute top-3 right-3 p-1.5 text-white/70 hover:text-white transition-colors">
-              <Heart className="w-4 h-4" />
-            </button>
+
             <div className="absolute top-10 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-[9px] text-white/80 cursor-pointer hover:bg-white hover:text-black transition-colors">
                <Search className="w-3 h-3" /> Thử Đồ AI
             </div>
@@ -116,9 +112,7 @@ export default function LookbookView({ outfit }: LookbookViewProps) {
           <div className="col-span-1 md:col-span-1 h-[320px] relative rounded-2xl bg-zinc-900 overflow-hidden group border border-zinc-800 shadow-md">
              <Image src={item3.imageUrl} alt={item3.name} fill className="object-cover transition-opacity duration-500 group-hover:opacity-80" />
             <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md text-white text-[9px] uppercase border border-white/20 rounded-md">#UTILITY</div>
-            <button className="absolute top-3 right-3 p-1.5 text-white/70 hover:text-white transition-colors">
-              <Heart className="w-4 h-4" />
-            </button>
+
             <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-12">
               <h4 className="text-white text-xs font-bold uppercase truncate">{item3.name}</h4>
               <p className="text-gray-400 text-xs">{item3.price.toLocaleString("vi-VN")} ₫</p>

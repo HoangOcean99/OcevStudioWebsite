@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { cart, toggleCart, wishlist, searchQuery, setSearchQuery, setSelectedCategory } = useAppStore();
+  const { cart, toggleCart, searchQuery, setSearchQuery, setSelectedCategory } = useAppStore();
   const { t } = useTranslation('navbar');
   const { language, toggleLanguage } = useLanguageStore();
   const { theme, setTheme } = useTheme();
@@ -31,7 +31,6 @@ export default function Navbar() {
     {
       name: t("studio") || "Phòng Thử Đồ",
       href: "/studio",
-      icon: <Scissors className="w-4 h-4 text-purple-500" />,
       badge: "NEW"
     },
   ];
@@ -44,9 +43,15 @@ export default function Navbar() {
           {/* Left: Brand Logo */}
           <div className="flex shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
-              <span className="w-9 h-9 bg-black dark:bg-white text-white dark:text-black font-black text-xl flex items-center justify-center rounded-xl tracking-tighter group-hover:scale-105 transition-transform">
-                O
-              </span>
+              <div className="relative w-9 h-9 group-hover:scale-105 transition-transform">
+                <Image
+                  src="/MainLogo.png"
+                  alt="OcevStudio"
+                  fill
+                  className="object-contain dark:invert dark:hue-rotate-180"
+                  priority
+                />
+              </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-xl tracking-widest text-gray-900 dark:text-white uppercase leading-none">
                   OCEV<span className="text-gray-400 font-light">STUDIO</span>
@@ -67,8 +72,8 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={`px-3 py-2 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap rounded-full ${isActive
-                      ? "text-black dark:text-white bg-gray-100/50 dark:bg-zinc-800/50"
-                      : "text-gray-500 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-900/30"
+                    ? "text-black dark:text-white bg-gray-100/50 dark:bg-zinc-800/50"
+                    : "text-gray-500 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-zinc-900/30"
                     }`}
                 >
                   {link.icon}
@@ -108,20 +113,7 @@ export default function Navbar() {
               <span className="uppercase">{language}</span>
             </button>
 
-            {/* Wishlist Icon */}
-            <Link
-              href="/shop?filter=wishlist"
-              onClick={() => setSelectedCategory('wishlist')}
-              className="hidden sm:flex relative p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 transition-colors"
-              title="Wishlist"
-            >
-              <Heart className="w-5 h-5" />
-              {wishlist.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
-                  {wishlist.length}
-                </span>
-              )}
-            </Link>
+
 
             {/* Cart Icon */}
             <button
@@ -190,8 +182,10 @@ export default function Navbar() {
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 w-full p-2.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors"
                         >
+                          <div className="flex items-center gap-3">
                           <Shield className="w-4 h-4" />
-                          Trang Quản Trị
+                          {t("adminDashboard") || "Trang Quản Trị"}
+                        </div>
                         </Link>
                       </div>
                     )}
@@ -241,9 +235,19 @@ export default function Navbar() {
           {/* Drawer */}
           <div className="relative w-4/5 max-w-sm h-full bg-white dark:bg-zinc-950 shadow-2xl flex flex-col overflow-y-auto animate-in slide-in-from-right ml-auto">
             <div className="p-4 flex items-center justify-between border-b border-gray-100 dark:border-zinc-800">
-              <span className="font-extrabold text-lg tracking-widest text-gray-900 dark:text-white uppercase">
-                OCEV<span className="text-gray-400 font-light">STUDIO</span>
-              </span>
+              <div className="flex items-center gap-2">
+                <div className="relative w-8 h-8">
+                  <Image
+                    src="/MainLogo.png"
+                    alt="OcevStudio"
+                    fill
+                    className="object-contain dark:invert dark:hue-rotate-180"
+                  />
+                </div>
+                <span className="font-extrabold text-lg tracking-widest text-gray-900 dark:text-white uppercase">
+                  OCEV<span className="text-gray-400 font-light">STUDIO</span>
+                </span>
+              </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="p-2 text-gray-500 hover:text-black dark:hover:text-white bg-gray-100 dark:bg-zinc-900 rounded-full"
@@ -303,8 +307,8 @@ export default function Navbar() {
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`p-4 rounded-2xl flex items-center gap-3 font-bold uppercase tracking-wider transition-colors ${isActive
-                        ? "bg-gray-100 dark:bg-zinc-800 text-black dark:text-white"
-                        : "text-gray-600 dark:text-gray-400"
+                      ? "bg-gray-100 dark:bg-zinc-800 text-black dark:text-white"
+                      : "text-gray-600 dark:text-gray-400"
                       }`}
                   >
                     {link.icon}
@@ -338,19 +342,7 @@ export default function Navbar() {
                 <span className="text-[10px] font-bold uppercase">{language}</span>
               </button>
 
-              <Link
-                href="/shop?filter=wishlist"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-zinc-900 text-gray-700 dark:text-gray-300 relative"
-              >
-                <Heart className="w-5 h-5" />
-                <span className="text-[10px] font-bold uppercase">Yêu thích</span>
-                {wishlist.length > 0 && (
-                  <span className="absolute top-2 right-2 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
-                    {wishlist.length}
-                  </span>
-                )}
-              </Link>
+
             </div>
           </div>
         </div>

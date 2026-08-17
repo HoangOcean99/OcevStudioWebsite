@@ -96,10 +96,10 @@ export default function OrdersPage() {
 
           <div className="space-y-6">
             {loading ? (
-              <div className="text-center py-12 text-gray-500">Loading orders...</div>
+              <div className="text-center py-12 text-gray-500">{t("loadingOrders") || "Loading orders..."}</div>
             ) : orders.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
-                You haven't placed any orders yet.
+                {t("noOrdersYet") || "You haven't placed any orders yet."}
               </div>
             ) : (
               orders.map((order) => (
@@ -112,11 +112,11 @@ export default function OrdersPage() {
                       <p className="font-mono font-bold text-sm truncate max-w-[120px] sm:max-w-xs" title={order._id}>{order._id}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 font-bold uppercase tracking-widest text-right">Date</p>
+                      <p className="text-xs text-gray-500 font-bold uppercase tracking-widest text-right">{t("date") || "Date"}</p>
                       <p className="font-bold text-sm text-right">{new Date(order.createdAt).toLocaleDateString()}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 font-bold uppercase tracking-widest text-right">Total</p>
+                      <p className="text-xs text-gray-500 font-bold uppercase tracking-widest text-right">{t("total") || "Total"}</p>
                       <p className="font-black text-lg text-right">{order.totalAmount.toLocaleString("vi-VN")} ₫</p>
                     </div>
                   </div>
@@ -129,12 +129,12 @@ export default function OrdersPage() {
                           {getProductImage(item.product) ? (
                             <Image src={getProductImage(item.product) as string} alt={getProductName(item.product)} fill className="object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 text-center leading-tight px-1">No Image</div>
+                            <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 text-center leading-tight px-1">{t("noImage") || "No Image"}</div>
                           )}
                         </div>
                         <div className="flex-1">
                           <p className="font-bold text-sm line-clamp-1">{getProductName(item.product)}</p>
-                          <p className="text-xs text-gray-500">Size: {item.size} | Qty: {item.quantity}</p>
+                          <p className="text-xs text-gray-500">{t("size") || "Size"}: {item.size} | {t("qty") || "Qty"}: {item.quantity}</p>
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-sm">{item.price.toLocaleString("vi-VN")} ₫</p>
