@@ -683,7 +683,7 @@ export default function ProductDetailPage({
                     {t("selectSize")}
                   </h3>
                   {product.sizeChartUrl && (
-                    <button onClick={() => setActiveSizeChart(product.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
+                    <button onClick={() => setActiveSizeChart(product.sizeChartUrl as string)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
                       {t("sizeGuide") || "Bảng Size"}
                     </button>
                   )}
@@ -814,7 +814,7 @@ export default function ProductDetailPage({
                 // Fallback to parent product's images if the item itself doesn't define multiple images
                 let baseImages = combinedItemImages.length > 1 
                   ? combinedItemImages 
-                  : (product.images?.length > 1 ? [...product.images] : combinedItemImages);
+                  : ((product.images?.length || 0) > 1 ? [...(product.images || [])] : combinedItemImages);
                   
                 let displayImages = [...baseImages];
                 
