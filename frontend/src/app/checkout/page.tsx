@@ -249,7 +249,7 @@ export default function CheckoutPage() {
                 </div>
                 
                 <div className="bg-gray-50 dark:bg-zinc-950/50 rounded-xl p-4 text-left w-full max-w-sm mb-8 space-y-2 text-sm border border-gray-200 dark:border-zinc-800">
-                  <p><span className="text-gray-500">Ngân hàng:</span> <span className="font-bold text-black dark:text-white float-right">VPBank</span></p>
+                  <p><span className="text-gray-500">Ngân hàng:</span> <span className="font-bold text-black dark:text-white float-right">TPBank</span></p>
                   <p><span className="text-gray-500">Số tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">0968178905</span></p>
                   <p><span className="text-gray-500">Chủ tài khoản:</span> <span className="font-bold text-black dark:text-white float-right">HOANG HAI DUONG</span></p>
                   <p><span className="text-gray-500">Nội dung:</span> <span className="font-bold text-black dark:text-white float-right">{pendingOrderCode}</span></p>
