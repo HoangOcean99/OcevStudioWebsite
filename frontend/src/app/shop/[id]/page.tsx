@@ -606,7 +606,7 @@ export default function ProductDetailPage({
                           {item.hasSize !== false && (
                             <div className="flex flex-col gap-1">
                               {item.sizeChartUrl && (
-                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="self-end text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600 mb-1">
+                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl as string)} className="self-end text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600 mb-1">
                                   {t("sizeGuide") || "Bảng Size"}
                                 </button>
                               )}
@@ -908,7 +908,7 @@ export default function ProductDetailPage({
                                 {t("selectSizeHeader") || "Chọn Kích Thước"}
                               </p>
                               {item.sizeChartUrl && (
-                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
+                                <button onClick={() => setActiveSizeChart(item.sizeChartUrl as string)} className="text-[10px] font-bold text-indigo-500 underline uppercase tracking-wider hover:text-indigo-600">
                                   {t("sizeGuide") || "Bảng Size"}
                                 </button>
                               )}
